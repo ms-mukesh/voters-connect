@@ -1,14 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 
 import TodoSlice from './reducers/todo/TodoSlice';
 import TypoGraphySlice from '@/src/lib/reduxToolkit/reducers/typoGraphy/TypoGraphySlice';
+import userProfileSlice from '@/src/lib/reduxToolkit/reducers/userProfile/UserProfileSlice';
 
 const store = configureStore({
-    // Place your reducer inside this reducer object.
-    reducer: {
-        todo: TodoSlice,
-        typoGraphy: TypoGraphySlice,
-    },
+  // Place your reducer inside this reducer object.
+  reducer: {
+    todo: TodoSlice,
+    typoGraphy: TypoGraphySlice,
+    userProfileData: userProfileSlice,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

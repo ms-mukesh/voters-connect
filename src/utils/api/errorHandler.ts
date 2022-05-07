@@ -1,13 +1,14 @@
-import { UNKNOWN_ERROR } from '@/src/constant/network';
-import { showPopupMessage } from '@/src/utils/localPopup';
+import {UNKNOWN_ERROR} from '@/src/constant/network';
+import {showPopupMessage} from '@/src/utils/localPopup';
 
 export const handleCatchError = (url: string, err: any) => {
-    if (__DEV__) {
-        console.log('api call error --- ', url, err, err?.response?.data);
-    }
-    showPopupMessage({
-        message: err?.response?.data?.message ?? UNKNOWN_ERROR,
-        type: 'error',
-    });
-    return Promise.reject(err?.response?.data ?? UNKNOWN_ERROR);
+  if (__DEV__) {
+    console.log('api call error --- ', url, err, err?.response?.data);
+  }
+  showPopupMessage({
+    message: err?.response?.data?.data ?? UNKNOWN_ERROR,
+    type: 'error',
+  });
+
+  return Promise.reject(err?.response?.data ?? UNKNOWN_ERROR);
 };
