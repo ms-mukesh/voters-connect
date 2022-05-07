@@ -15,11 +15,10 @@ export const handleResponse = (
         ', Url--',
         url,
         ', response--',
-        response?.data?.data,
       );
     }
     if (needToastMessage) {
-      showPopupMessage({message: response?.data?.data ?? ''});
+      // showPopupMessage({message: response?.data?.data ?? ''});
     }
     return Promise.resolve(response);
   } else {

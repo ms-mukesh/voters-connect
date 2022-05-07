@@ -14,4 +14,5 @@ export const SCREEN_NAME = {
     personalDetails: 'personalDetails',
     skillDetails: 'skillDetails',
     searchScreen: 'searchScreen',
+    voterList:'voterList'
 };

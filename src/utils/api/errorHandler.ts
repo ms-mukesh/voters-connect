@@ -3,10 +3,10 @@ import {showPopupMessage} from '@/src/utils/localPopup';
 
 export const handleCatchError = (url: string, err: any) => {
   if (__DEV__) {
-    console.log('api call error --- ', url, err, err?.response?.data);
+    console.log('api call error --- ', url, err,);
   }
   showPopupMessage({
-    message: err?.response?.data?.data ?? UNKNOWN_ERROR,
+    message: UNKNOWN_ERROR,
     type: 'error',
   });
 

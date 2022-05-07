@@ -54,5 +54,5 @@ export const textColor = {
   lightestGray: '#EBEBEB',
 };
 export const gradientColors = {
-  cardGradient: ['#00A9A6', '#FBD277'],
+  cardGradient: ['#2c2d9b', '#FBD277'],
 };

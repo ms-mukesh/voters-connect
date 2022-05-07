@@ -18,6 +18,7 @@ import OnBoarding from '@/src/screens/onBoarding/onBoardingScreen/onBoarding.ind
 import PersonalDetails from '@/src/screens/onBoarding/onBoardingScreen/userDetailsForms/personalDetails.index';
 import SkillDetails from '@/src/screens/onBoarding/onBoardingScreen/userDetailsForms/skillDetails.index';
 import SearchScreen from '@/src/screens/commonScreen/searchScreen/searchScreen.index';
+import VoterList from '@/src/screens/modules/voterList/voterListScreen/voterList.index';
 
 const AppNavigation = () => {
   return (
@@ -68,6 +69,7 @@ const AppNavigation = () => {
           name={SCREEN_NAME.searchScreen}
           component={SearchScreen}
         />
+        <Stack.Screen name={SCREEN_NAME.voterList} component={VoterList} />
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>
