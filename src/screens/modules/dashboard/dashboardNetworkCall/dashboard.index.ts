@@ -5,6 +5,8 @@ import {
   ADD_BULK_VOTER_LIST_ENDPOINT,
   USER_ACTION_STACK,
 } from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.const';
+import {showPopupMessage} from '@/src/utils/localPopup';
+import {SUCCESS_API_RESPONSE_CODE} from '@/src/constant/envConfig.index';
 
 export const addBulkVoterListInDb = (dataArray: any = []) => {
   return new Promise(async resolve => {
@@ -17,7 +19,11 @@ export const addBulkVoterListInDb = (dataArray: any = []) => {
         API_METHOD.post,
         obj,
       );
-      if (addBulkDataRes) {
+      if (
+        addBulkDataRes &&
+        addBulkDataRes?.status === SUCCESS_API_RESPONSE_CODE
+      ) {
+        showPopupMessage({message: 'Date added!!'});
         return resolve(true);
       } else {
         return resolve(false);

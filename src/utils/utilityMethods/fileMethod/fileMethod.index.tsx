@@ -176,7 +176,8 @@ const extractDataFromExcel = async () => {
           isValueDefined(headerObj?.phoneNumber) &&
           isValueDefined(headerObj?.shaktiKendraName) &&
           isValueDefined(headerObj?.familyNumber) &&
-          isValueDefined(headerObj?.dob)
+          isValueDefined(headerObj?.dob) &&
+          isValueDefined(headerObj?.gender)
         ) {
           return data;
         } else {

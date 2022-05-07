@@ -85,5 +85,21 @@ const style = StyleSheet.create({
     height: hp(15),
     padding: hp(1),
   },
+  generalPlaceHolderView: {
+    backgroundColor: color.gray,
+    height: hp(15),
+    width: '90%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: hp(2),
+    borderRadius: hp(1),
+  },
+  justifyContentView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+
+  },
 });
 export default style;

@@ -5,7 +5,11 @@ import {
   SUCCESS_API_RESPONSE_CODE,
 } from '@/src/constant/envConfig.index';
 import {USER_ACTION_STACK} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.const';
-import {GET_VOTER_LIST_ENDPOINT} from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.const';
+import {
+  GET_VOTER_LIST_ENDPOINT,
+  UPDATE_VOTER_DETAILS_ENDPOINT,
+} from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.const';
+import {showPopupMessage} from '@/src/utils/localPopup';
 
 export const getVoterListFromDb = (pageNo = 1, limit = 1, searchKey = '') => {
   return new Promise(async resolve => {
@@ -30,8 +34,36 @@ export const getVoterListFromDb = (pageNo = 1, limit = 1, searchKey = '') => {
       );
 
       if (voterListRes && voterListRes?.status === SUCCESS_API_RESPONSE_CODE) {
-        console.log(voterListRes?.data);
-        return resolve(voterListRes);
+        return resolve(voterListRes?.data);
+      } else {
+        return resolve(false);
+      }
+    } catch (ex) {
+      return resolve(false);
+    }
+  });
+};
+
+export const updateVoterDetailsInDb = (obj: any) => {
+  return new Promise(async resolve => {
+    try {
+      const url = USER_ACTION_STACK + UPDATE_VOTER_DETAILS_ENDPOINT;
+      const voterUpdateRes = await callApi(
+        url,
+        API_METHOD.post,
+        obj,
+        API_BASE_URL,
+        {},
+        true,
+        false,
+      );
+
+      if (
+        voterUpdateRes &&
+        voterUpdateRes?.status === SUCCESS_API_RESPONSE_CODE
+      ) {
+        showPopupMessage({message: 'Date updated!!'});
+        return resolve(voterUpdateRes?.data);
       } else {
         return resolve(false);
       }

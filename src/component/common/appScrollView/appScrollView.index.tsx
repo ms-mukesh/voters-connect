@@ -6,6 +6,7 @@ interface AppScrollViewType {
     showsHorizontalScrollIndicator?: boolean;
     contentContainerStyle?: any;
     keyboardShouldPersistTaps?: any;
+    nestedScrollEnabled?:boolean;
 }
 const AppScrollView = (props: AppScrollViewType) => {
     const {
@@ -14,6 +15,7 @@ const AppScrollView = (props: AppScrollViewType) => {
         showsHorizontalScrollIndicator = false,
         contentContainerStyle = null,
         keyboardShouldPersistTaps = 'handled',
+        nestedScrollEnabled = true
     } = props;
     return (
         <ScrollView
@@ -24,6 +26,7 @@ const AppScrollView = (props: AppScrollViewType) => {
             ]}
             showsVerticalScrollIndicator={showsVerticalScrollIndicator}
             showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
+            nestedScrollEnabled={nestedScrollEnabled}
         >
             {children}
         </ScrollView>

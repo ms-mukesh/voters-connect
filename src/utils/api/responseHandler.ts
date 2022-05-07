@@ -1,5 +1,4 @@
 import {NO_DATA_FOUND} from '@/src/constant/network';
-import {showPopupMessage} from '@/src/utils/localPopup';
 
 export const handleResponse = (
   url: string,
