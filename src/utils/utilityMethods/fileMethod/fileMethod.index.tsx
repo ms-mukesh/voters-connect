@@ -12,8 +12,11 @@ import {
   isStringNotEmpty,
   isValueDefined,
 } from '@/src/utils/utilityMethods/stringMethod.index';
+import RNFS from 'react-native-fs';
+import * as XLSX from 'xlsx';
+import {showPopupMessage} from '@/src/utils/localPopup';
 
-function getAge(birthdate: any) {
+export function getAge(birthdate: any) {
   if (isStringNotEmpty(birthdate)) {
     return Math.floor(
       (new Date().getTime() - new Date(birthdate).getTime()) / 3.154e10,
@@ -148,90 +151,71 @@ const downloadTask = (
     }
   });
 };
-export const extractDataFromExcelFile = (data: any) => {
-  return new Promise(async resolve => {
-    if (data.length > 0) {
-      let tempDataArray: any = [];
-      await data.map((memberData: any) => {
-        tempDataArray.push({
-          VoterId:
-            !isValueDefined(memberData.VoterVotingId) &&
-            memberData.VoterVotingId === null
-              ? 'NA'
-              : memberData.VoterVotingId,
-          FirstName:
-            memberData.FirstName === null ? 'NA' : memberData.FirstName,
-          MiddleName:
-            memberData.MiddleName === null ? 'NA' : memberData.MiddleName,
-          LastName: memberData.LastName === null ? 'NA' : memberData.LastName,
-          Email: memberData.Email === null ? 'NA' : memberData.Email,
-          DOB: memberData.DOB === null ? 'NA' : getAge(memberData.DOB),
-          // AadhaarNo: memberData.AadhaarNo === null ? 'NA' : memberData.AadhaarNo,
-          // MaritalStatus: memberData.MaritalStatus === null ? 'NA' : memberData.MaritalStatus,
-          // BloodGroup: memberData.BloodGroup === null ? 'NA' : memberData.BloodGroup,
-          // Zodiac: memberData.Zodiac === null ? 'NA' : memberData.Zodiac,
-          Gender: memberData.Gender === null ? 'NA' : memberData.Gender,
-          // Studies: memberData.Studies === null ? 'NA' : memberData.Studies,
-          // MarriageDate: memberData.MarriageDate === null ? 'NA' : memberData.MarriageDate,
-          // IsDaughterFamily:
-          //     memberData.Gender.toLowerCase() === 'male'
-          //         ? 'NA'
-          //         : parseInt(memberData.IsDaughterFamily) === 1
-          //         ? 'YES'
-          //         : 'NO',
-          // MotherName:
-          //     memberData.MotherEntry === null
-          //         ? 'NA'
-          //         : `${memberData.MotherEntry.FirstName} ${memberData.MotherEntry.LastName}`,
-          // FatherName: memberData.MiddleName === null ? 'NA' : memberData.MiddleName,
-          // FatherInLaw:
-          //     memberData.FatherInLawDetail === null
-          //         ? 'NA'
-          //         : `${memberData.FatherInLawDetail.FirstName} ${
-          //             memberData.FatherInLawDetail.LastName
-          //             }`,
-          // MotherInLaw:
-          //     memberData.MotherInLawDetail === null
-          //         ? 'NA'
-          //         : `${memberData.MotherInLawDetail.FirstName} ${
-          //             memberData.MotherInLawDetail.LastName
-          //             }`,
-          // Occupation:
-          //     memberData.OccupationDetail === null ? 'NA' : memberData.OccupationDetail.Name,
-          // NativePlace:
-          //     memberData.FamilyMaster === null
-          //         ? 'NA'
-          //         : memberData.FamilyMaster.NativePlaceMaster === null
-          //         ? 'NA'
-          //         : memberData.FamilyMaster.NativePlaceMaster.Name,
-          HomeAddress:
-            memberData.FamilyMaster === null
-              ? 'NA'
-              : memberData.FamilyMaster.AddressMaster.Address,
-          HomeCity:
-            memberData.FamilyMaster === null
-              ? 'NA'
-              : memberData.FamilyMaster.AddressMaster.CityOrVillageName,
-          HomeState:
-            memberData.FamilyMaster === null
-              ? 'NA'
-              : memberData.FamilyMaster.AddressMaster.StateName,
-          HomeCountry:
-            memberData.FamilyMaster === null
-              ? 'NA'
-              : memberData.FamilyMaster.AddressMaster.CountryName,
+const extractDataFromExcel = async () => {
+  try {
+    const docRes: any = await selectDocument();
+    if (docRes && docRes.length > 0) {
+      const result = await RNFS.readFile(docRes[0].uri, 'base64');
+      const wb = XLSX.read(result, {type: 'base64'});
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws, {header: 1});
+      if (data.length > 1) {
+        const header: any = data[0];
+        let headerObj: any = {};
+        header.map((item: any) => {
+          headerObj = {...headerObj, [item]: item};
         });
-      });
-      resolve(tempDataArray);
+        if (
+          isValueDefined(headerObj?.electionId) &&
+          isValueDefined(headerObj?.boothId) &&
+          isValueDefined(headerObj?.voterName) &&
+          isValueDefined(headerObj?.village) &&
+          isValueDefined(headerObj?.voterCategory) &&
+          isValueDefined(headerObj?.mandalName) &&
+          isValueDefined(headerObj?.phoneNumber) &&
+          isValueDefined(headerObj?.shaktiKendraName) &&
+          isValueDefined(headerObj?.familyNumber) &&
+          isValueDefined(headerObj?.dob)
+        ) {
+          return data;
+        } else {
+          showPopupMessage({message: 'Invalid excel file', type: 'error'});
+          return false;
+        }
+      } else {
+        showPopupMessage({message: 'Excel file is empty'});
+        return false;
+      }
     } else {
-      resolve(false);
+      showPopupMessage({message: 'wrong file selected'});
+      return false;
     }
+  } catch (ex) {
+    showPopupMessage({message: 'Invalid excel file', type: 'error'});
+    return false;
+  }
+};
+const uriToBlob = (uri: any) => {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function () {
+      reject(new Error('uriToBlob failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
   });
 };
 
 export {
+  uriToBlob,
   downloadTask,
   selectImageFromCamera,
   selectImageFromGallery,
   selectDocument,
+  extractDataFromExcel,
 };

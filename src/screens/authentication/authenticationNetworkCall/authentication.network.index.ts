@@ -70,7 +70,6 @@ export const verifyOtpFromApi = (
               purpose: purpose,
               email: fieldValue,
             };
-      console.log(obj);
       const verifyOtpApiRes = await callApi(
         VERIFY_OTP_ENDPOINT,
         API_METHOD.post,

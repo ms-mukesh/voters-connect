@@ -11,8 +11,8 @@ import {
   DASHBOARD_ACTIVE,
   DASHBOARD_INACTIVE,
 } from '@/src/assets/images/svgIcons/bottomTab/bottomTabIcon.index';
-import ContactUs from '@/src/screens/ContactUs';
 import Home from '@/src/screens/Home';
+import Dashboard from '@/src/screens/modules/dashboard/dashboardScreen/dashboard.index';
 
 const Tab = createBottomTabNavigator();
 const TABS_NAME = {
@@ -67,7 +67,7 @@ export const MainBottomTab = (props: any) => {
         tabBarInactiveTintColor: 'gray',
       })}
       initialRouteName={calculatedInitialRoute}>
-      <Tab.Screen name={TABS_NAME.dashBoard} component={ContactUs} {...props} />
+      <Tab.Screen name={TABS_NAME.dashBoard} component={Dashboard} {...props} />
       <Tab.Screen name={TABS_NAME.account} component={Home} {...props} />
     </Tab.Navigator>
   );
