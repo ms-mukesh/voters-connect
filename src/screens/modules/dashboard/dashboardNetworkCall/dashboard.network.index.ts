@@ -4,7 +4,7 @@ import {API_METHOD} from '@/src/constant/network';
 import {
   ADD_BULK_VOTER_LIST_ENDPOINT,
   USER_ACTION_STACK,
-} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.const';
+} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.network.const';
 import {showPopupMessage} from '@/src/utils/localPopup';
 import {SUCCESS_API_RESPONSE_CODE} from '@/src/constant/envConfig.index';
 

@@ -181,17 +181,18 @@ const VoterList = (props: any) => {
         </CustomText>
       </View>
       <View style={styleSheet.dividerViewRegular} />
-
-      <CustomFlatList
-        data={voterList}
-        renderItem={_renderVoterList}
-        contentContainerStyle={{paddingBottom: hp(40)}}
-        placeHolder={placeHolder?.calculatedPlaceHolderView ?? null}
-        apiLoader={calculatedLoading}
-        bottomLoader={calculatedBottomLoading}
-        onReferesh={_onReferesh}
-        loadMore={_onEndReached}
-      />
+      {(voterList?.length > 0 || loading) && (
+        <CustomFlatList
+          data={voterList}
+          renderItem={_renderVoterList}
+          contentContainerStyle={{paddingBottom: hp(40)}}
+          placeHolder={placeHolder?.calculatedPlaceHolderView ?? null}
+          apiLoader={calculatedLoading}
+          bottomLoader={calculatedBottomLoading}
+          onReferesh={_onReferesh}
+          loadMore={_onEndReached}
+        />
+      )}
     </Background>
   );
 };

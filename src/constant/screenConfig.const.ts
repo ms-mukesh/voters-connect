@@ -16,4 +16,6 @@ export const SCREEN_NAME = {
   searchScreen: 'searchScreen',
   voterList: 'voterList',
   voterDetails: 'voterDetails',
+  electionList : 'electionList',
+  addNewElection : 'addNewElection'
 };

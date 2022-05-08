@@ -11,9 +11,10 @@ import {Image, Pressable, StyleSheet, View} from 'react-native';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
 import {hp, wp} from '@/src/utils/screenRatio';
 import {extractDataFromExcel} from '@/src/utils/utilityMethods/fileMethod/fileMethod.index';
-import {addBulkVoterListInDb} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.index';
+import {addBulkVoterListInDb} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.network.index';
 import {implementStackNavigation} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
 import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
+import {AppHeader} from '@/src/component/section.index';
 const Dashboard = (props: any) => {
   const styleSheet = StyleSheetSelection();
   const [apiLoader, setApiLoader] = useState(false);
@@ -29,31 +30,42 @@ const Dashboard = (props: any) => {
     }
     setApiLoader(false);
   };
+  const _onPressElectionList = () => {
+    implementStackNavigation(
+      props?.navigation ?? null,
+      SCREEN_NAME.electionList,
+    );
+  };
   const dashboardMenu = [
     {title: 'Voter list', icon: VOTER_LIST, callback: _onPressVoterList},
     {title: 'Add Voter', icon: ADD_VOTER, callback: _addBulkData},
+    {title: 'Election List', icon: ADD_VOTER, callback: _onPressElectionList},
   ];
   const _renderDashboardMenu = ({item}: any) => {
     return (
-      <AppCard width={wp(40)}>
-        <Pressable onPress={item?.callback ?? null}>
-          <Image
-            resizeMode={'contain'}
-            style={styles.iconImage}
-            source={item?.icon}
-          />
-          <View style={styleSheet.dividerViewRegular} />
-          <CustomText
-            style={[styleSheet.mediumLargeBold, {alignSelf: 'center'}]}>
-            {item?.title ?? ''}
-          </CustomText>
-        </Pressable>
-      </AppCard>
+      <View>
+        <View style={styleSheet.dividerViewRegular} />
+        <AppCard width={wp(42)}>
+          <Pressable onPress={item?.callback ?? null}>
+            <Image
+              resizeMode={'contain'}
+              style={styles.iconImage}
+              source={item?.icon}
+            />
+            <View style={styleSheet.dividerViewRegular} />
+            <CustomText
+              style={[styleSheet.mediumLargeBold, {alignSelf: 'center'}]}>
+              {item?.title ?? ''}
+            </CustomText>
+          </Pressable>
+        </AppCard>
+      </View>
     );
   };
   return (
     <Background>
       <Loader isLoading={apiLoader} />
+      <AppHeader title={'Dashboard'} />
       <View style={[styleSheet.contentMainView]}>
         <View style={styleSheet.dividerViewRegular} />
         <CustomFlatList

@@ -24,6 +24,7 @@ import {
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
 import {SAVE_BUTTON_TEXT} from '@/src/screens/onBoarding/onBoardingUtils/onBoardUtils.const.index';
 import AppList from '@/src/component/common/appListBox/appList.index';
+import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
 interface AppFormType {
   fields?: any[];
   customStyle?: any;
@@ -126,23 +127,28 @@ const AppForm = (props: AppFormType) => {
   };
   const _renderDatePicker = (
     minimumDate = new Date(),
-    maximumDate = new Date(),
+    // maximumDate = new Date(),
   ) => {
-    console.log(minimumDate, maximumDate);
     return (
       <DateTimePickerModal
         isVisible={calculatedOpenDatePicker}
         mode="date"
         onConfirm={date => _onGetValueFromDatePicker(date)}
         onCancel={_closeDatePicker}
-        // minimumDate={minimumDate}
-        maximumDate={maximumDate}
+        minimumDate={minimumDate}
+        // maximumDate={maximumDate}
       />
     );
   };
-  const _updatePickerFieldValue = (value: any) => {
+  const _updatePickerFieldValue = (
+    value: any,
+    key = '',
+    onChange: any = null,
+  ) => {
     setOpenPicker(false);
-    console.log(value);
+    if (isStringNotEmpty(key) && onChange !== null) {
+      onChange(value[key]);
+    }
   };
   const _setPickerCurrentValue = async (
     data = [],
@@ -184,7 +190,7 @@ const AppForm = (props: AppFormType) => {
           maxLength = 100,
           autoCapitalize = 'none',
           minimumDate = new Date(),
-          maximumDate = new Date(),
+          // maximumDate = new Date(),
           rightComponent = null,
           radioButtonData = [],
           selectedRadioIndex = 0,
@@ -265,7 +271,13 @@ const AppForm = (props: AppFormType) => {
                 {calculatedOpenPicker &&
                   calculatedCurrentPickerTitle === pickerTitle && (
                     <AppList
-                      onPress={_updatePickerFieldValue}
+                      onPress={(selectedPickerValue: any) =>
+                        _updatePickerFieldValue(
+                          selectedPickerValue,
+                          pickerKeyValue,
+                          onChangeStateMethod,
+                        )
+                      }
                       data={pickerValue}
                       keyName={pickerKeyValue}
                     />
@@ -352,8 +364,7 @@ const AppForm = (props: AppFormType) => {
                     }
                   />
                 </Pressable>
-                {calculatedOpenDatePicker &&
-                  _renderDatePicker(minimumDate, maximumDate)}
+                {calculatedOpenDatePicker && _renderDatePicker(minimumDate)}
                 {_renderDividerView()}
               </View>
             );

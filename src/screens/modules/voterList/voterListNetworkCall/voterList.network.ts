@@ -4,7 +4,7 @@ import {
   API_BASE_URL,
   SUCCESS_API_RESPONSE_CODE,
 } from '@/src/constant/envConfig.index';
-import {USER_ACTION_STACK} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.const';
+import {USER_ACTION_STACK} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.network.const';
 import {
   GET_VOTER_LIST_ENDPOINT,
   UPDATE_VOTER_DETAILS_ENDPOINT,

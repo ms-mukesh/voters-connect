@@ -19,7 +19,9 @@ import PersonalDetails from '@/src/screens/onBoarding/onBoardingScreen/userDetai
 import SkillDetails from '@/src/screens/onBoarding/onBoardingScreen/userDetailsForms/skillDetails.index';
 import SearchScreen from '@/src/screens/commonScreen/searchScreen/searchScreen.index';
 import VoterList from '@/src/screens/modules/voterList/voterListScreen/voterList.index';
-import VoterDetails from "@/src/screens/modules/voterList/voterListScreen/voterDetails.index";
+import VoterDetails from '@/src/screens/modules/voterList/voterListScreen/voterDetails.index';
+import ElectionList from '@/src/screens/modules/election/electionScreen/election.index';
+import AddNewElection from "@/src/screens/modules/election/electionScreen/addNewElection.index";
 
 const AppNavigation = () => {
   return (
@@ -71,7 +73,18 @@ const AppNavigation = () => {
           component={SearchScreen}
         />
         <Stack.Screen name={SCREEN_NAME.voterList} component={VoterList} />
-        <Stack.Screen name={SCREEN_NAME.voterDetails} component={VoterDetails} />
+        <Stack.Screen
+          name={SCREEN_NAME.voterDetails}
+          component={VoterDetails}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.electionList}
+          component={ElectionList}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.addNewElection}
+          component={AddNewElection}
+        />
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>

@@ -36,19 +36,22 @@ import DIAGNOAL_BLACK from '@/src/assets/images/svgIcons/generalIcons/diagnoal-b
 
 // @ts-ignore
 import DOWN_ARROW_PRIMARY from '@/src/assets/images/svgIcons/generalIcons/down-arrow-primary-color.svg';
+// @ts-ignore
+import ADD_WHITE from '@/src/assets/images/svgIcons/generalIcons/add-white.svg';
 
 export {
-    DOWN_ARROW_PRIMARY,
-    DIAGNOAL_BLACK,
-    SEARCH_ICON,
-    DOWN_ARROW_BLACK,
-    DELETE_ICON,
-    CALENDER_ICON,
-    CROSS_BLACK_ICON,
-    GREEN_ADD_ICON,
-    DEFAULT_USER_ICON,
-    PAUSE_WHITE,
-    LEFT_BACK_ARROW,
-    RIGHT_TICK_V2_WHITE,
-    MORE_OPTION,
+  ADD_WHITE,
+  DOWN_ARROW_PRIMARY,
+  DIAGNOAL_BLACK,
+  SEARCH_ICON,
+  DOWN_ARROW_BLACK,
+  DELETE_ICON,
+  CALENDER_ICON,
+  CROSS_BLACK_ICON,
+  GREEN_ADD_ICON,
+  DEFAULT_USER_ICON,
+  PAUSE_WHITE,
+  LEFT_BACK_ARROW,
+  RIGHT_TICK_V2_WHITE,
+  MORE_OPTION,
 };
