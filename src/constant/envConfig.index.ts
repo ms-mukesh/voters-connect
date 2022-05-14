@@ -7,7 +7,7 @@ export const {
   X_API_KEY,
 } = Config;
 
-export const API_BASE_URL = 'http://192.168.0.2:3000/';
+export const API_BASE_URL = 'http://192.168.0.3:3000/';
 export const SUCCESS_API_RESPONSE_CODE = 200;
 
 export const AVAILABLE_ENV_NAMES = {

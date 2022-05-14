@@ -24,3 +24,4 @@ export {default as RadioButtonRow} from './radioButtonRow/radioButtonRow.index';
 export {default as AppRadioButton} from './appRadioButton/appRadioButton.index';
 export {default as AppSearchBar} from './appSearchBar/appSearchBar.index';
 export {default as AppFabButton} from './fabButton/fabButton.index';
+export {default as CustomTab} from './customTabs/customTabs.index';

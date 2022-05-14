@@ -198,6 +198,7 @@ const AppForm = (props: AppFormType) => {
           customTextInputMainView = null,
           multiline = false,
           pickerTitle = '',
+          radioButtonKey = 'title',
         } = item;
 
         switch (fieldType) {
@@ -231,6 +232,7 @@ const AppForm = (props: AppFormType) => {
                   selectedIndex={selectedRadioIndex}
                   title={headerTitle}
                   data={radioButtonData}
+                  titleKey={radioButtonKey}
                 />
                 {_renderDividerView()}
               </View>

@@ -3,22 +3,32 @@ import {Background, Loader} from '@/src/component/common';
 import {AppHeader} from '@/src/component/section.index';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
 import {View} from 'react-native';
-import {ELECTION_TYPES, KEYBOARD_TYPE} from '@/src/constant/generalConst';
+import {
+  ELECTION_TYPES,
+  KEYBOARD_TYPE,
+  SOMETHING_WENT_WRONG,
+} from '@/src/constant/generalConst';
 import {FIELD_TYPE} from '@/src/component/sections/appForm/appForm.const.index';
 import {AppForm} from '@/src/component/sections/section.index';
 import {getFormatedLastUpdatedDate} from '@/src/utils/utilityMethods/dateMethod/dateMethod.index';
-import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
+import {
+  isStringNotEmpty,
+  isValueDefined,
+} from '@/src/utils/utilityMethods/stringMethod.index';
 import {showPopupMessage} from '@/src/utils/localPopup';
 import {
   addNewElectionToDb,
   updateElectionDetailsToDb,
 } from '@/src/screens/modules/election/electionNetworkCall/election.network.index';
-import {implementGoBack} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
+import {
+  implementGoBack,
+  implementStackNavigation,
+} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
+import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
 const AddNewElection = (props: any) => {
   const {} = props;
   const styleSheet = StyleSheetSelection();
   const electionDetails: any = props?.route?.params?.electionDetails ?? null;
-  console.log(electionDetails);
   const [apiLoader, setApiLoader] = useState(false);
   const [electionName, setElectionName] = useState(
     electionDetails?.ElectionName ?? '',
@@ -232,11 +242,28 @@ const AddNewElection = (props: any) => {
       setApiLoader(false);
     }
   };
+  const _onPressListElectionVoters = () => {
+    if (isValueDefined(electionDetails?.ElectionMasterId ?? '')) {
+      const paramsObj = {
+        electionDetails: electionDetails,
+      };
+      implementStackNavigation(
+        props?.navigation ?? null,
+        SCREEN_NAME.electionVotersTab,
+        paramsObj,
+      );
+    } else {
+      showPopupMessage({message: SOMETHING_WENT_WRONG, type: 'error'});
+    }
+  };
 
   return (
     <Background>
       <AppHeader
         title={props?.route?.params?.headerTitle ?? 'Add New Election'}
+        rightText={'List'}
+        onRightIconPress={_onPressListElectionVoters}
+        navigation={props?.navigation ?? null}
       />
       <Loader isLoading={apiLoader} />
       <View style={styleSheet.dividerViewRegular} />

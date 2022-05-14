@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Background, Loader} from '@/src/component/common';
 import {AppHeader} from '@/src/component/section.index';
-import {KEYBOARD_TYPE} from '@/src/constant/generalConst';
+import {KEYBOARD_TYPE, SOMETHING_WENT_WRONG} from '@/src/constant/generalConst';
 import {FIELD_TYPE} from '@/src/component/sections/appForm/appForm.const.index';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
 import {View} from 'react-native';
@@ -15,10 +15,17 @@ import {showPopupMessage} from '@/src/utils/localPopup';
 import {validatePhoneNumber} from '@/src/utils/validations/fieldValidator.index';
 import {updateVoterDetailsInDb} from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.network';
 import {implementGoBack} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
+import {
+  addVoterEntryInElectionMaster,
+  removeVoterEntryInElectionMaster,
+} from '@/src/screens/modules/election/electionNetworkCall/election.network.index';
 const VoterDetails = (props: any) => {
   const {} = props;
   const styleSheet = StyleSheetSelection();
   const voterDetails = props?.route?.params?.voterDetails ?? null;
+  const fromVoterList = props?.route?.params?.fromVoterList ?? false;
+  const isVoteGiven = props?.route?.params?.isVoted ?? false;
+  const voterElectionId = props?.route?.params?.electionId ?? 0;
   const [voterName, setVoterName] = useState(voterDetails?.voterName ?? '');
   const [boothId, setBoothId] = useState(voterDetails?.boothId ?? '');
   const [electionId, setElectionId] = useState(voterDetails?.electionId ?? '');
@@ -70,6 +77,7 @@ const VoterDetails = (props: any) => {
       value: voterName,
       onChangeStateMethod: setVoterName,
       fieldType: FIELD_TYPE.text,
+      editable: !fromVoterList,
     },
     {
       headerTitle: 'Phone number',
@@ -80,6 +88,7 @@ const VoterDetails = (props: any) => {
       onChangeStateMethod: setPhoneNumber,
       fieldType: FIELD_TYPE.text,
       maxLength: 10,
+      editable: !fromVoterList,
     },
     {
       headerTitle: 'Election id',
@@ -89,7 +98,7 @@ const VoterDetails = (props: any) => {
       value: electionId,
       onChangeStateMethod: setElectionId,
       fieldType: FIELD_TYPE.text,
-      editable: true,
+      editable: !fromVoterList,
       selectTextOnFocus: true,
     },
     {
@@ -102,6 +111,7 @@ const VoterDetails = (props: any) => {
       fieldType: FIELD_TYPE.radio,
       rightComponent: null,
       radioButtonData: GENDER_ARRAY,
+      editable: !fromVoterList,
     },
     {
       headerTitle: 'Voter category',
@@ -113,6 +123,7 @@ const VoterDetails = (props: any) => {
       fieldType: FIELD_TYPE.radio,
       rightComponent: null,
       radioButtonData: VOTER_CATEGORY,
+      editable: !fromVoterList,
     },
     {
       headerTitle: 'Family number',
@@ -122,8 +133,8 @@ const VoterDetails = (props: any) => {
       value: familyNumber,
       onChangeStateMethod: setFamilyNumber,
       fieldType: FIELD_TYPE.text,
-      editable: true,
       selectTextOnFocus: false,
+      editable: !fromVoterList,
     },
     {
       headerTitle: 'Shaktikendra Name',
@@ -133,8 +144,8 @@ const VoterDetails = (props: any) => {
       value: shaktiKendra,
       onChangeStateMethod: setShaktiKendra,
       fieldType: FIELD_TYPE.text,
-      editable: true,
       selectTextOnFocus: false,
+      editable: !fromVoterList,
     },
     {
       headerTitle: 'Mandal name',
@@ -144,7 +155,7 @@ const VoterDetails = (props: any) => {
       value: mandalName,
       onChangeStateMethod: setMandalName,
       fieldType: FIELD_TYPE.text,
-      editable: true,
+      editable: !fromVoterList,
       selectTextOnFocus: false,
     },
     {
@@ -155,7 +166,7 @@ const VoterDetails = (props: any) => {
       value: village,
       onChangeStateMethod: setVillage,
       fieldType: FIELD_TYPE.text,
-      editable: true,
+      editable: !fromVoterList,
       selectTextOnFocus: false,
     },
     {
@@ -166,7 +177,7 @@ const VoterDetails = (props: any) => {
       value: boothId,
       onChangeStateMethod: setBoothId,
       fieldType: FIELD_TYPE.text,
-      editable: true,
+      editable: !fromVoterList,
       selectTextOnFocus: false,
     },
   ];
@@ -260,19 +271,44 @@ const VoterDetails = (props: any) => {
       }
     }
   };
+  const _updateVoterCurrentStatus = async () => {
+    const obj = {
+      VoterId: voterDetails?.voterUniqueId,
+      ElectionId: voterElectionId,
+    };
+    setApiLoader(true);
+    let updateApiRes: any = false;
+    if (isVoteGiven) {
+      updateApiRes = await removeVoterEntryInElectionMaster({data: obj});
+    } else {
+      updateApiRes = await addVoterEntryInElectionMaster({data: obj});
+    }
+
+    if (updateApiRes) {
+      await props?.route?.params?.refereshList();
+      implementGoBack(props?.navigation ?? null);
+    } else {
+      showPopupMessage({message: SOMETHING_WENT_WRONG, type: 'error'});
+    }
+    setApiLoader(false);
+  };
 
   return (
     <Background>
       <AppHeader
         title={'Voter details'}
         navigation={props?.navigation ?? null}
+        rightText={fromVoterList ? 'mark' : ''}
+        onRightIconPress={fromVoterList ? _updateVoterCurrentStatus : null}
       />
       <Loader isLoading={apiLoader} />
       <View style={styleSheet.dividerViewRegular} />
       <View style={styleSheet.contentMainView}>
         <AppForm
-          onPressButton={_onPressSaveButton}
-          buttonText={'Save'}
+          onPressButton={
+            fromVoterList ? _updateVoterCurrentStatus : _onPressSaveButton
+          }
+          buttonText={fromVoterList ? 'update current vote status' : 'Save'}
           fields={formFields}
         />
       </View>

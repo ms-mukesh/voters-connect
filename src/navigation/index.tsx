@@ -22,6 +22,8 @@ import VoterList from '@/src/screens/modules/voterList/voterListScreen/voterList
 import VoterDetails from '@/src/screens/modules/voterList/voterListScreen/voterDetails.index';
 import ElectionList from '@/src/screens/modules/election/electionScreen/election.index';
 import AddNewElection from "@/src/screens/modules/election/electionScreen/addNewElection.index";
+import ElectionVotersTab from "@/src/screens/modules/election/electionScreen/electionVoters/electionVoters.tab.index";
+import AppFilterScreen from "@/src/screens/commonScreen/filterScreen/appFilterScreen.index";
 
 const AppNavigation = () => {
   return (
@@ -84,6 +86,14 @@ const AppNavigation = () => {
         <Stack.Screen
           name={SCREEN_NAME.addNewElection}
           component={AddNewElection}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.electionVotersTab}
+          component={ElectionVotersTab}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.appFilterScreen}
+          component={AppFilterScreen}
         />
       </Stack.Navigator>
       <Toast />

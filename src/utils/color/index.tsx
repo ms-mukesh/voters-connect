@@ -30,7 +30,7 @@ export const color = {
   app_background_color: '#ffffff',
   shadow_color: '#828282',
   primaryText: '#00A58C',
-  enableButton: '#567ba7',
+  enableButton: '#09556d',
   disableButton: '#BFBFBF',
   enableButtonText: '#ffffff',
   disableButtonText: '#ffffff',

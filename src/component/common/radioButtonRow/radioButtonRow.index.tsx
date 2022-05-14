@@ -8,6 +8,7 @@ import {
 } from '@/src/component/common';
 import {textColor} from '@/src/utils/color';
 import {FONT_FAMILY} from '@/src/screens/styleSheet/fontFamily.index';
+import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
 interface RadioButtonRowType {
   horizontal?: boolean;
   data?: any[];
@@ -17,6 +18,7 @@ interface RadioButtonRowType {
   customHeaderStyle?: any;
   isMandetory?: boolean;
   headerTitleColor?: string;
+  titleKey?: string;
 }
 const RadioButtonRow = (props: RadioButtonRowType) => {
   const {
@@ -28,21 +30,23 @@ const RadioButtonRow = (props: RadioButtonRowType) => {
     selectedIndex = 0,
     onChangeSelectedIndex = null,
     title = '',
+    titleKey = 'title',
   } = props;
   const styleSheet = StyleSheetSelection();
   const _onPressRadioButton = (index: number) => {
     onChangeSelectedIndex !== null && onChangeSelectedIndex(index);
   };
   const _renderRadioButtonRow = ({item, index}: any) => {
-    return (
+    return isStringNotEmpty(item[titleKey]) ? (
       <View key={'RadioRow' + index}>
         <AppRadioButton
           onPress={() => _onPressRadioButton(index)}
           isSelected={index === selectedIndex}
-          title={item?.title ?? ''}
+          title={item[titleKey]}
         />
       </View>
-    );
+    )
+      : null;
   };
   const _renderListWidthSeprator = () => {
     return <View style={styles.flatListWrapper} />;
@@ -74,6 +78,7 @@ const RadioButtonRow = (props: RadioButtonRowType) => {
         data={data}
         horizontal={horizontal}
         renderItem={_renderRadioButtonRow}
+        neededEmptyScreen={false}
       />
     </View>
   );

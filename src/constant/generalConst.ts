@@ -26,3 +26,4 @@ export const MONTH_INITIALS_NAME = [
   'Nov',
   'Dec',
 ];
+export const SOMETHING_WENT_WRONG = 'Something went wrong';
