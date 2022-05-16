@@ -8,8 +8,12 @@ import {SPLASH_SCREEN_IMG} from '@/src/assets/images/svgIcons/introScreen/introS
 import {Image, StyleSheet} from 'react-native';
 import {getValueFromAsyncStorage} from '@/src/utils/utilityMethods/asynStorageMethod/asynStorage.index';
 import {ASYNC_STORAGE_CONST} from '@/src/utils/utilityMethods/asynStorageMethod/asynStorage.const.index';
+import {getFilterKeywordFromDb} from '@/src/screens/modules/election/electionNetworkCall/election.network.index';
+import {UseAppDispatch} from '@/src/lib/reduxToolkit/hooks';
+import {addFilterKeyData} from '@/src/lib/reduxToolkit/reducers/userProfile/UserProfileSlice';
 const Splashscreen = (props: any) => {
   const [initialRoute, setInitialRoute] = useState('');
+  const dispatch = UseAppDispatch();
   const calculatedInitialRoute = useMemo(() => {
     return initialRoute;
   }, [initialRoute]);
@@ -22,6 +26,10 @@ const Splashscreen = (props: any) => {
         );
         const accessToken = await getAuthToken();
         console.log('here-=-', accessToken);
+        const filterKey: any = await getFilterKeywordFromDb();
+        if (filterKey) {
+          dispatch(addFilterKeyData(filterKey?.data ?? null));
+        }
         if (accessToken) {
           setInitialRoute(SCREEN_NAME.indexScreen);
         } else {

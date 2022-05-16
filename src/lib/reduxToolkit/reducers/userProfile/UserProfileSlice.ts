@@ -9,6 +9,7 @@ import {userData} from '@/src/lib/reduxToolkit/types/userProfile';
 
 const initialState: userData = {
   userData: null,
+  filterData: null,
   loading: false,
 };
 // `createSlice` will infer the state type from the `initialState` argument
@@ -21,9 +22,13 @@ export const userProfileSlice = createSlice({
       state.userData = action.payload;
       return state;
     },
+    addFilterKeyData: (state, action: PayloadAction<any>) => {
+      state.filterData = action.payload;
+      return state;
+    },
   },
 });
 
-export const {addUserProfileData} = userProfileSlice.actions;
+export const {addUserProfileData, addFilterKeyData} = userProfileSlice.actions;
 
 export default userProfileSlice.reducer;

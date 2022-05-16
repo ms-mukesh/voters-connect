@@ -25,6 +25,9 @@ const ElectionVotersVoteGiven = (props: any) => {
   const [apiLoader, setApiLoader] = useState(false);
   const [voterList, setVoterList] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [isFilterOn, setIsFilterOn] = useState(false);
+  const [filterData, setFilterData] = useState([]);
+  const [searchData, setSearchData] = useState([]);
   const styleSheet = StyleSheetSelection();
   const _setVoterListFromDb = async (
     electionId = electionDetails?.ElectionMasterId ?? 0,
@@ -64,6 +67,8 @@ const ElectionVotersVoteGiven = (props: any) => {
     customView: _renderPlaceHolder(),
   });
   const _onReferesh = async () => {
+    setFilterData([]);
+    setIsFilterOn(false);
     setSearchText('');
     _setVoterListFromDb(electionDetails?.ElectionMasterId ?? 0).then(() => {});
   };
@@ -93,19 +98,83 @@ const ElectionVotersVoteGiven = (props: any) => {
   };
   const _clearSearchText = () => {
     setSearchText('');
-    _setVoterListFromDb().then(() => {});
+    // _setVoterListFromDb().then(() => {});
   };
   const _onChangeSearchText = async (e: any) => {
     setSearchText(e?.nativeEvent?.text ?? '');
-    await _setVoterListFromDb(
-      electionDetails?.ElectionMasterId ?? 0,
-      e?.nativeEvent?.text ?? '',
-    );
+    const newArray = voterList.filter(function (el: any) {
+      return (
+        el?.boothId
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text ?? '') >= 0 ||
+        el?.voterName
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+          0 ||
+        el?.gender
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+          0 ||
+        el?.voterCategory
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+          0 ||
+        el?.electionId
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+          0 ||
+        el?.village
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+          0 ||
+        el?.dob
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+          0 ||
+        el?.familyNumber
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+          0 ||
+        el?.mandalName
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+          0 ||
+        el?.shaktiKendraName
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+          0 ||
+        el?.phoneNumber
+          ?.toString()
+          ?.toLowerCase()
+          .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >= 0
+      );
+    });
+    setSearchData([...newArray]);
+  };
+  const _updateFilterValues = (filterDataRes: any) => {
+    setIsFilterOn(true);
+    setFilterData(filterDataRes);
   };
   const _onPressFilter = () => {
+    const paramsObj = {
+      electionMasterId: electionDetails?.ElectionMasterId ?? 0,
+      isVoted: true,
+      onChange: _updateFilterValues,
+    };
     implementStackNavigation(
       props?.navigation ?? null,
       SCREEN_NAME.appFilterScreen,
+      paramsObj,
     );
   };
 
@@ -124,24 +193,30 @@ const ElectionVotersVoteGiven = (props: any) => {
           {width: '85%', alignSelf: 'center'},
         ]}>
         <CustomText style={styleSheet.regularBold}>
-          want to filter? click here
+          {isFilterOn ? '' : 'want to filter? click here'}
         </CustomText>
         <AppButton
-          title={'Filter'}
-          onPress={_onPressFilter}
+          title={isFilterOn ? 'Remove Filter' : 'Filter'}
+          onPress={isFilterOn ? _refereshList : _onPressFilter}
           containerStyle={styles.filterButton}
         />
       </View>
       <View style={styleSheet.dividerView} />
 
       <CustomFlatList
-        data={voterList}
+        data={
+          isStringNotEmpty(searchText)
+            ? searchData
+            : isFilterOn
+            ? filterData
+            : voterList
+        }
         renderItem={_renderVoterList}
         contentContainerStyle={{paddingBottom: hp(40)}}
         placeHolder={placeHolder?.calculatedPlaceHolderView ?? null}
         apiLoader={apiLoader}
         onReferesh={_onReferesh}
-        emptyScreenTitle={'No Voter has given vote till now'}
+        emptyScreenTitle={'No data found'}
       />
     </Background>
   );

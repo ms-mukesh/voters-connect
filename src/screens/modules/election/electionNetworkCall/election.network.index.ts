@@ -10,6 +10,8 @@ import {
   ADD_VOTER_ENTRY_IN_ELECTION_MASTER_ENDPOINT,
   GET_ELECTION_LIST_ENDPOINT,
   GET_FILTER_KEYWORD_ENDPOINT,
+  GET_FILTERED_VOTER_LIST_BY_ELECTION_ENDPOINT,
+  GET_FILTERED_VOTER_LIST_ENDPOINT,
   GET_VOTER_LIST_BY_ELECTION_ID,
   REMOVE_VOTER_ENTRY_IN_ELECTION_MASTER_ENDPOINT,
   UPDATE_ELECTION_DETAILS_ENDPOINT,
@@ -231,6 +233,63 @@ export const getFilterKeywordFromDb = () => {
         url,
         API_METHOD.get,
         {},
+        API_BASE_URL,
+        {},
+        true,
+        false,
+      );
+      if (
+        keywordListRes &&
+        keywordListRes?.status === SUCCESS_API_RESPONSE_CODE
+      ) {
+        return resolve(keywordListRes?.data);
+      } else {
+        return resolve(false);
+      }
+    } catch (ex) {
+      return resolve(false);
+    }
+  });
+};
+
+export const getFilterDataFromDb = (obj: any) => {
+  return new Promise(async resolve => {
+    try {
+      const url = USER_ACTION_STACK + GET_FILTERED_VOTER_LIST_ENDPOINT;
+
+      const keywordListRes = await callApi(
+        url,
+        API_METHOD.post,
+        obj,
+        API_BASE_URL,
+        {},
+        true,
+        false,
+      );
+      if (
+        keywordListRes &&
+        keywordListRes?.status === SUCCESS_API_RESPONSE_CODE
+      ) {
+        return resolve(keywordListRes?.data);
+      } else {
+        return resolve(false);
+      }
+    } catch (ex) {
+      return resolve(false);
+    }
+  });
+};
+
+export const getFilterDataByElectionFromDb = (obj: any) => {
+  return new Promise(async resolve => {
+    try {
+      const url =
+        USER_ACTION_STACK + GET_FILTERED_VOTER_LIST_BY_ELECTION_ENDPOINT;
+
+      const keywordListRes = await callApi(
+        url,
+        API_METHOD.post,
+        obj,
         API_BASE_URL,
         {},
         true,

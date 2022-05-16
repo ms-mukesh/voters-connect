@@ -3,6 +3,9 @@ export const ADD_NEW_ELECTION_ENDPOINT = 'insertNewElectionDetails';
 export const UPDATE_ELECTION_DETAILS_ENDPOINT = 'updateElectionDetails';
 export const GET_VOTER_LIST_BY_ELECTION_ID = 'getVoterListByElectionId';
 export const GET_FILTER_KEYWORD_ENDPOINT = 'getFilterKeywords';
+export const GET_FILTERED_VOTER_LIST_ENDPOINT = 'getFilteredVoterList';
+export const GET_FILTERED_VOTER_LIST_BY_ELECTION_ENDPOINT =
+  'getFilteredVoterListByElection';
 export const ADD_VOTER_ENTRY_IN_ELECTION_MASTER_ENDPOINT =
   'addVoterEntryForElectionMaster';
 export const REMOVE_VOTER_ENTRY_IN_ELECTION_MASTER_ENDPOINT =
