@@ -1,6 +1,7 @@
 import callApi from '@/src/utils/api';
 import {
   GENERATE_OTP_ENDPOINT,
+  GET_PROFILE_DATA_ENDPOINT,
   LOGIN_ENDPOINT,
   LOGIN_STACK,
   SIGNUP_API_REQ_TYPE,
@@ -17,6 +18,7 @@ import {
   API_BASE_URL,
   SUCCESS_API_RESPONSE_CODE,
 } from '@/src/constant/envConfig.index';
+import {USER_ACTION_STACK} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.network.const';
 
 export const generateOtpFromApi = (
   fieldValue = '',
@@ -141,6 +143,25 @@ export const loginUserApi = (emailId = '', password = '') => {
         loginUserApiRes?.status === SUCCESS_API_RESPONSE_CODE
       ) {
         return resolve(loginUserApiRes);
+      } else {
+        return resolve(false);
+      }
+    } catch (ex) {
+      return resolve(false);
+    }
+  });
+};
+
+export const getMyProfileFromDb = () => {
+  return new Promise(async resolve => {
+    try {
+      const UserApiRes = await callApi(
+        USER_ACTION_STACK + GET_PROFILE_DATA_ENDPOINT,
+        API_METHOD.get,
+      );
+
+      if (UserApiRes) {
+        return resolve(UserApiRes?.data);
       } else {
         return resolve(false);
       }

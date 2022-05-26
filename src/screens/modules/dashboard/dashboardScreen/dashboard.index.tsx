@@ -65,7 +65,7 @@ const Dashboard = (props: any) => {
   return (
     <Background>
       <Loader isLoading={apiLoader} />
-      <AppHeader title={'Dashboard'} />
+      <AppHeader requireBackArrow={false} title={'Dashboard'} />
       <View style={[styleSheet.contentMainView]}>
         <View style={styleSheet.dividerViewRegular} />
         <CustomFlatList

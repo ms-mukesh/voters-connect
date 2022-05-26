@@ -8,20 +8,28 @@ import {
 import {AppHeader} from '@/src/component/section.index';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
 import {StyleSheet, View} from 'react-native';
-import {getVoterListFromDb} from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.network';
+import {
+  getFilteredVoterDetailsFromDb,
+  getVoterListFromDb,
+} from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.network';
 import {
   implementStackNavigation,
   validateUpdatePageNumber,
 } from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
 import PlaceHolder from '@/src/component/sections/placeHolder/placeHolder.index';
-import {hp} from '@/src/utils/screenRatio';
+import {hp, wp} from '@/src/utils/screenRatio';
 import VoterCard from '@/src/screens/modules/voterList/voterListCommon/voterCard.index';
 import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
 import {textColor} from '@/src/utils/color';
+import FabButton from '@/src/component/common/fabButton/fabButton.index';
+import {FILTER_ICON} from '@/src/assets/images/svgIcons/generalIcons/generalIcon.index';
+import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
 const VoterList = (props: any) => {
   const {} = props;
   const PAGE_LIMIT = 7;
   const [voterList, setVoterList] = useState([]);
+  const [filterData, setFilterData] = useState([]);
+  const [isFilterOn, setIsFilterOn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [bottomLoading, setBottomLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
@@ -30,6 +38,7 @@ const VoterList = (props: any) => {
   const [maleCount, setMaleCount] = useState(0);
   const [femaleCount, setFemaleCount] = useState(0);
   const [otherCount, setOtherCount] = useState(0);
+  const [filterSearchData, setFilterSearchData] = useState([]);
   const styleSheet = StyleSheetSelection();
   const calculatedPageNo = useMemo(() => {
     return pageNo;
@@ -51,14 +60,75 @@ const VoterList = (props: any) => {
   };
   const _onChangeSearchText = async (e: any) => {
     setSearchText(e?.nativeEvent?.text ?? '');
-    setPageNo(1);
-    await _setVoterListFromDb(
-      1,
-      true,
-      false,
-      PAGE_LIMIT,
-      e?.nativeEvent?.text ?? '',
-    );
+    if (isFilterOn) {
+      const newArray = filterData.filter(function (el: any) {
+        return (
+          el?.boothId
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text ?? '') >= 0 ||
+          el?.voterName
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+            0 ||
+          el?.gender
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+            0 ||
+          el?.voterCategory
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+            0 ||
+          el?.electionId
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+            0 ||
+          el?.village
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+            0 ||
+          el?.dob
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+            0 ||
+          el?.familyNumber
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+            0 ||
+          el?.mandalName
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+            0 ||
+          el?.shaktiKendraName
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >=
+            0 ||
+          el?.phoneNumber
+            ?.toString()
+            ?.toLowerCase()
+            .indexOf(e?.nativeEvent?.text?.toString()?.toLowerCase() ?? '') >= 0
+        );
+      });
+      setFilterSearchData([...newArray]);
+    } else {
+      setPageNo(1);
+      await _setVoterListFromDb(
+        1,
+        true,
+        false,
+        PAGE_LIMIT,
+        e?.nativeEvent?.text ?? '',
+      );
+    }
   };
   const _setVoterListFromDb = async (
     pageNoLocal = calculatedPageNo,
@@ -119,6 +189,8 @@ const VoterList = (props: any) => {
   };
   const _onReferesh = async () => {
     setSearchText('');
+    setIsFilterOn(false);
+    setFilterData([]);
     await setPageNo(1);
     _setVoterListFromDb(1, true, false, PAGE_LIMIT, '').then(() => {});
   };
@@ -152,14 +224,62 @@ const VoterList = (props: any) => {
       />
     );
   };
+  const _onPressAddNewVoter = () => {
+    const paramsObj = {
+      landedForAdd: true,
+      refereshList: _refereshList,
+    };
+    implementStackNavigation(
+      props?.navigation ?? null,
+      SCREEN_NAME.voterDetails,
+      paramsObj,
+    );
+  };
+  const _iWillApplyFilter = async (obj: any) => {
+    setLoading(true);
+    const filterApiRes: any = await getFilteredVoterDetailsFromDb({data: obj});
+    if (filterApiRes) {
+      setIsFilterOn(true);
+      setFilterData(filterApiRes?.data ?? []);
+    }
+    setLoading(false);
+    // console.log('data--', obj);
+  };
+
+  const _onPressFilterIcon = () => {
+    const paramsObj = {
+      fromVoterList: true,
+      onChange: _iWillApplyFilter,
+    };
+    implementStackNavigation(
+      props?.navigation ?? null,
+      SCREEN_NAME.appFilterScreen,
+      paramsObj,
+    );
+  };
 
   useEffect(() => {
     _setVoterListFromDb().then(() => {});
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Background>
-      <AppHeader navigation={props?.navigation ?? null} title={'Voter list'} />
+      <AppHeader
+        rightIcon={FILTER_ICON}
+        navigation={props?.navigation ?? null}
+        title={'Voter list'}
+        onRightIconPress={_onPressFilterIcon}
+      />
       <View style={styleSheet.dividerViewRegular} />
+      {isFilterOn && (
+        <CustomText
+          onPress={_onReferesh}
+          style={[
+            styleSheet.largeSemiBold,
+            {alignSelf: 'flex-end', marginRight: wp(5), marginBottom: hp(2)},
+          ]}>
+          Clear Filter
+        </CustomText>
+      )}
       <AppSearchBar
         onPressClear={_clearSearchText}
         value={searchText}
@@ -183,7 +303,13 @@ const VoterList = (props: any) => {
       <View style={styleSheet.dividerViewRegular} />
       {(voterList?.length > 0 || loading) && (
         <CustomFlatList
-          data={voterList}
+          data={
+            isFilterOn
+              ? isStringNotEmpty(searchText)
+                ? filterSearchData
+                : filterData
+              : voterList
+          }
           renderItem={_renderVoterList}
           contentContainerStyle={{paddingBottom: hp(40)}}
           placeHolder={placeHolder?.calculatedPlaceHolderView ?? null}
@@ -193,6 +319,7 @@ const VoterList = (props: any) => {
           loadMore={_onEndReached}
         />
       )}
+      <FabButton onPress={_onPressAddNewVoter} />
     </Background>
   );
 };

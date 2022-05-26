@@ -6,6 +6,8 @@ import {
 } from '@/src/constant/envConfig.index';
 import {USER_ACTION_STACK} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.network.const';
 import {
+  ADD_NEW_VOTER_DETAILS_ENDPOINT,
+  GET_FILTERED_VOTER_LIST_ENDPOINT,
   GET_VOTER_LIST_ENDPOINT,
   UPDATE_VOTER_DETAILS_ENDPOINT,
 } from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.const';
@@ -64,6 +66,61 @@ export const updateVoterDetailsInDb = (obj: any) => {
       ) {
         showPopupMessage({message: 'Date updated!!'});
         return resolve(voterUpdateRes?.data);
+      } else {
+        return resolve(false);
+      }
+    } catch (ex) {
+      return resolve(false);
+    }
+  });
+};
+
+export const addVoterDetailsInDb = (obj: any) => {
+  return new Promise(async resolve => {
+    try {
+      const url = USER_ACTION_STACK + ADD_NEW_VOTER_DETAILS_ENDPOINT;
+      const voterUpdateRes = await callApi(
+        url,
+        API_METHOD.post,
+        obj,
+        API_BASE_URL,
+        {},
+        true,
+        false,
+      );
+
+      if (
+        voterUpdateRes &&
+        voterUpdateRes?.status === SUCCESS_API_RESPONSE_CODE
+      ) {
+        showPopupMessage({message: 'Date updated!!'});
+        return resolve(voterUpdateRes?.data);
+      } else {
+        return resolve(false);
+      }
+    } catch (ex) {
+      return resolve(false);
+    }
+  });
+};
+
+export const getFilteredVoterDetailsFromDb = (obj: any) => {
+  return new Promise(async resolve => {
+    try {
+      const url = USER_ACTION_STACK + GET_FILTERED_VOTER_LIST_ENDPOINT;
+      const voterRes = await callApi(
+        url,
+        API_METHOD.post,
+        obj,
+        API_BASE_URL,
+        {},
+        true,
+        false,
+      );
+
+      if (voterRes && voterRes?.status === SUCCESS_API_RESPONSE_CODE) {
+        // showPopupMessage({message: 'Date updated!!'});
+        return resolve(voterRes?.data);
       } else {
         return resolve(false);
       }

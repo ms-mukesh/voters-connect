@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_7024" data-name="Rectangle 7024" width="16" height="16" transform="translate(339 137)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Mask_Group_136" data-name="Mask Group 136" transform="translate(-339 -137)" clip-path="url(#clip-path)">
+    <g id="setting-5Filter3" transform="translate(338.07 136.069)">
+      <path id="Path_68983" data-name="Path 68983" d="M14.14,16.372V8.93" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.116"/>
+      <path id="Path_68984" data-name="Path 68984" d="M14.14,5.953V1.488" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.116"/>
+      <path id="Path_68985" data-name="Path 68985" d="M8.93,16.372V14.14" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.116"/>
+      <path id="Path_68986" data-name="Path 68986" d="M8.93,11.163V1.488" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.116"/>
+      <path id="Path_68987" data-name="Path 68987" d="M3.721,16.372V5.953" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.116"/>
+      <path id="Path_68988" data-name="Path 68988" d="M3.721,2.977V1.488" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.116"/>
+      <path id="Path_68989" data-name="Path 68989" d="M2.233,5.953H5.209" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.116"/>
+      <path id="Path_68990" data-name="Path 68990" d="M12.651,8.93h2.977" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.116"/>
+      <path id="Path_68991" data-name="Path 68991" d="M7.442,11.163h2.977" fill="none" stroke="#292d32" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.116"/>
+    </g>
+  </g>
+</svg>

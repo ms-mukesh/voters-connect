@@ -99,7 +99,9 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-
+  },
+  verticalDivider: {
+    width: wp(4),
   },
 });
 export default style;

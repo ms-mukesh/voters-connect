@@ -3,6 +3,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import TodoSlice from './reducers/todo/TodoSlice';
 import TypoGraphySlice from '@/src/lib/reduxToolkit/reducers/typoGraphy/TypoGraphySlice';
 import userProfileSlice from '@/src/lib/reduxToolkit/reducers/userProfile/UserProfileSlice';
+import ProfileSlice from '@/src/lib/reduxToolkit/reducers/profile/ProfileSlice';
 
 const store = configureStore({
   // Place your reducer inside this reducer object.
@@ -10,6 +11,7 @@ const store = configureStore({
     todo: TodoSlice,
     typoGraphy: TypoGraphySlice,
     userProfileData: userProfileSlice,
+    profile: ProfileSlice,
   },
 });
 

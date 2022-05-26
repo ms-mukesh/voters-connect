@@ -9,6 +9,7 @@ import {
 import {textColor} from '@/src/utils/color';
 import {FONT_FAMILY} from '@/src/screens/styleSheet/fontFamily.index';
 import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
+import { wp } from "@/src/utils/screenRatio";
 interface RadioButtonRowType {
   horizontal?: boolean;
   data?: any[];
@@ -45,8 +46,7 @@ const RadioButtonRow = (props: RadioButtonRowType) => {
           title={item[titleKey]}
         />
       </View>
-    )
-      : null;
+    ) : null;
   };
   const _renderListWidthSeprator = () => {
     return <View style={styles.flatListWrapper} />;
@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
   },
   flatList: {
     paddingBottom: 0,
-    width: '100%',
+    width: wp(100),
+    // paddingRight: wp(20),
   },
   flatListWrapper: {width: '2%'},
 });

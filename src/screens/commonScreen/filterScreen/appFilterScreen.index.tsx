@@ -11,20 +11,25 @@ import {
   VOTER_CATEGORY,
 } from '@/src/screens/onBoarding/onBoardingUtils/onBoardUtils.const.index';
 import {removeDuplicates} from '@/src/utils/utilityMethods/stringMethod.index';
-import {UseAppSelector} from '@/src/lib/reduxToolkit/hooks';
-import {getFilterDataByElectionFromDb} from '@/src/screens/modules/election/electionNetworkCall/election.network.index';
+import {UseAppDispatch, UseAppSelector} from '@/src/lib/reduxToolkit/hooks';
+import {
+  getFilterDataByElectionFromDb,
+  getFilterKeywordFromDb,
+} from '@/src/screens/modules/election/electionNetworkCall/election.network.index';
 import {showPopupMessage} from '@/src/utils/localPopup';
 import {implementGoBack} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
+import {addFilterKeyData} from '@/src/lib/reduxToolkit/reducers/userProfile/UserProfileSlice';
 const AppFilterScreen = (props: any) => {
   const {} = props;
   const isVoted = props?.route?.params?.isVoted ?? false;
   const electionMasterId = props?.route?.params?.electionMasterId ?? 0;
+  const fromVoterList = props?.route?.params?.fromVoterList ?? false;
   const {filterData = null}: any = UseAppSelector(
     state => state.userProfileData,
   );
   const styleSheet = StyleSheetSelection();
   const [gender, setGender] = useState('female');
-
+  const dispatch = UseAppDispatch();
   const [voterCategory, setVoterCategory] = useState('red');
   const [voterCategoryIndex, setVoterCategoryIndex] = useState(0);
   const [genderIndex, setGenderIndex] = useState(0);
@@ -179,11 +184,6 @@ const AppFilterScreen = (props: any) => {
       filterData?.voterFilterList ?? [],
       'shaktiKendraName',
     );
-    console.log(
-      madalArray?.length > 0 && mandalIndex < madalArray?.length,
-      madalArray.length,
-      mandalIndex,
-    );
 
     const obj = {
       gender: gender,
@@ -212,21 +212,32 @@ const AppFilterScreen = (props: any) => {
       isVoted: isVoted,
       electionId: electionMasterId,
     };
-    const filterDataApiRes: any = await getFilterDataByElectionFromDb({
-      data: obj,
-    });
-    console.log(filterDataApiRes?.data);
-    if (filterDataApiRes && filterDataApiRes?.data?.length > 0) {
-      props?.route?.params?.onChange(filterDataApiRes?.data);
+    if (fromVoterList) {
+      props?.route?.params?.onChange(obj);
       implementGoBack(props?.navigation ?? null);
     } else {
-      showPopupMessage({message: 'No result available', type: 'info'});
+      const filterDataApiRes: any = await getFilterDataByElectionFromDb({
+        data: obj,
+      });
+      if (filterDataApiRes && filterDataApiRes?.data?.length > 0) {
+        props?.route?.params?.onChange(filterDataApiRes?.data);
+        implementGoBack(props?.navigation ?? null);
+      } else {
+        showPopupMessage({message: 'No result available', type: 'info'});
+      }
+    }
+  };
+
+  const _setFilterKeywords = async () => {
+    const filterKey: any = await getFilterKeywordFromDb();
+    if (filterKey) {
+      dispatch(addFilterKeyData(filterKey?.data ?? null));
     }
   };
 
   useEffect(() => {
     setApiLoader(true);
-    // _setFilterKeywords().then(() => {});
+    _setFilterKeywords().then(() => {});
     setApiLoader(false);
   }, []);
   return (

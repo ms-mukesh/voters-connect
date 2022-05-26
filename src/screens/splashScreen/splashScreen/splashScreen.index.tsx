@@ -11,6 +11,8 @@ import {ASYNC_STORAGE_CONST} from '@/src/utils/utilityMethods/asynStorageMethod/
 import {getFilterKeywordFromDb} from '@/src/screens/modules/election/electionNetworkCall/election.network.index';
 import {UseAppDispatch} from '@/src/lib/reduxToolkit/hooks';
 import {addFilterKeyData} from '@/src/lib/reduxToolkit/reducers/userProfile/UserProfileSlice';
+import {getMyProfileFromDb} from '@/src/screens/authentication/authenticationNetworkCall/authentication.network.index';
+import {addProfile} from '@/src/lib/reduxToolkit/reducers/profile/ProfileSlice';
 const Splashscreen = (props: any) => {
   const [initialRoute, setInitialRoute] = useState('');
   const dispatch = UseAppDispatch();
@@ -25,12 +27,16 @@ const Splashscreen = (props: any) => {
           ASYNC_STORAGE_CONST.allFieldsValidForLogin,
         );
         const accessToken = await getAuthToken();
-        console.log('here-=-', accessToken);
-        const filterKey: any = await getFilterKeywordFromDb();
-        if (filterKey) {
-          dispatch(addFilterKeyData(filterKey?.data ?? null));
-        }
+
         if (accessToken) {
+          const filterKey: any = await getFilterKeywordFromDb();
+          if (filterKey) {
+            dispatch(addFilterKeyData(filterKey?.data ?? null));
+          }
+          const profileData: any = await getMyProfileFromDb();
+          if (profileData) {
+            dispatch(addProfile(profileData?.data ?? null));
+          }
           setInitialRoute(SCREEN_NAME.indexScreen);
         } else {
           setInitialRoute(SCREEN_NAME.entrance);

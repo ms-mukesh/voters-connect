@@ -39,7 +39,11 @@ import DOWN_ARROW_PRIMARY from '@/src/assets/images/svgIcons/generalIcons/down-a
 // @ts-ignore
 import ADD_WHITE from '@/src/assets/images/svgIcons/generalIcons/add-white.svg';
 
+// @ts-ignore
+import FILTER_ICON from '@/src/assets/images/svgIcons/generalIcons/filter-single-line.svg';
+
 export {
+  FILTER_ICON,
   ADD_WHITE,
   DOWN_ARROW_PRIMARY,
   DIAGNOAL_BLACK,

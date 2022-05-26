@@ -13,7 +13,10 @@ import {
 import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
 import {showPopupMessage} from '@/src/utils/localPopup';
 import {validatePhoneNumber} from '@/src/utils/validations/fieldValidator.index';
-import {updateVoterDetailsInDb} from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.network';
+import {
+  addVoterDetailsInDb,
+  updateVoterDetailsInDb,
+} from "@/src/screens/modules/voterList/voterListNetworkCall/voterList.network";
 import {implementGoBack} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
 import {
   addVoterEntryInElectionMaster,
@@ -24,6 +27,7 @@ const VoterDetails = (props: any) => {
   const styleSheet = StyleSheetSelection();
   const voterDetails = props?.route?.params?.voterDetails ?? null;
   const fromVoterList = props?.route?.params?.fromVoterList ?? false;
+  const landedForAdd = props?.route?.params?.landedForAdd ?? false;
   const isVoteGiven = props?.route?.params?.isVoted ?? false;
   const voterElectionId = props?.route?.params?.electionId ?? 0;
   const [voterName, setVoterName] = useState(voterDetails?.voterName ?? '');
@@ -244,7 +248,7 @@ const VoterDetails = (props: any) => {
   const _onPressSaveButton = async () => {
     const isAllFieldValid = _iWillValidateFormField();
     if (isAllFieldValid) {
-      if (isStringNotEmpty(voterDetails?.voterUniqueId ?? '')) {
+      if (isStringNotEmpty(voterDetails?.voterUniqueId ?? '') || landedForAdd) {
         const obj = {
           boothId: boothId,
           dob: null,
@@ -260,10 +264,18 @@ const VoterDetails = (props: any) => {
           voterUniqueId: voterDetails?.voterUniqueId ?? '',
         };
         setApiLoader(true);
-        const updateApiRes = await updateVoterDetailsInDb({data: obj});
-        if (updateApiRes) {
-          await props?.route?.params?.refereshList();
-          implementGoBack(props?.navigation ?? null);
+        if (landedForAdd) {
+          const addApiRes = await addVoterDetailsInDb({data: obj});
+          if (addApiRes) {
+            await props?.route?.params?.refereshList();
+            implementGoBack(props?.navigation ?? null);
+          }
+        } else {
+          const updateApiRes = await updateVoterDetailsInDb({data: obj});
+          if (updateApiRes) {
+            await props?.route?.params?.refereshList();
+            implementGoBack(props?.navigation ?? null);
+          }
         }
         setApiLoader(false);
       } else {

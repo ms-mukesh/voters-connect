@@ -107,7 +107,10 @@ const ElectionList = (props: any) => {
 
   return (
     <Background>
-      <AppHeader title={'Election List'} />
+      <AppHeader
+        navigation={props?.navigation ?? null}
+        title={'Election List'}
+      />
       <View style={styleSheet.contentMainView}>
         <View style={styleSheet.dividerViewRegular} />
         {electionList.length > 0 || apiLoader ? (
