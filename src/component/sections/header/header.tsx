@@ -6,6 +6,7 @@ import {SvgImage} from '@/src/component/common/index';
 import {color} from '@/src/utils/color';
 import {LEFT_BACK_ARROW} from '@/src/assets/images/svgIcons/generalIcons/generalIcon.index';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
+import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
 
 interface AppHeaderType {
   title?: string;
@@ -16,6 +17,7 @@ interface AppHeaderType {
   navigation?: any;
   backEnabled?: boolean;
   requireBackArrow?: boolean;
+  rightText?: string;
 }
 const AppHeader = (props: AppHeaderType) => {
   const styleSheet = StyleSheetSelection();
@@ -28,6 +30,7 @@ const AppHeader = (props: AppHeaderType) => {
     navigation = null,
     backEnabled = false,
     requireBackArrow = true,
+    rightText = '',
   } = props;
   //local style sheet
   const styles = StyleSheet.create({
@@ -126,6 +129,16 @@ const AppHeader = (props: AppHeaderType) => {
         <Pressable onPress={onRightIconPress} style={styles.rightValueView}>
           <SvgImage Source={rightIcon} height={hp(5)} width={wp(5)} />
         </Pressable>
+      )}
+      {isStringNotEmpty(rightText) && (
+        <CustomText
+          onPress={onRightIconPress}
+          style={[
+            styleSheet.xLargeBold,
+            {marginTop: hp(2.5), marginRight: wp(5)},
+          ]}>
+          {rightText}
+        </CustomText>
       )}
     </View>
   );
