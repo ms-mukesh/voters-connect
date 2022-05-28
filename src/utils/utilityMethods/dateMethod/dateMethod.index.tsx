@@ -73,10 +73,29 @@ const getFormattedTime = (timeString = '') => {
     return '';
   }
 };
+const getFormattedDate = (date: any) => {
+  try {
+    if (isStringNotEmpty(date)) {
+      const dateString = new Date(date);
+      let dateFormat =
+        dateString.getDate() +
+        '-' +
+        (dateString.getMonth() + 1) +
+        '-' +
+        dateString.getFullYear();
+      return dateFormat.includes('NaN') ? date : dateFormat;
+    } else {
+      return '';
+    }
+  } catch (ex) {
+    return '';
+  }
+};
 export {
   getFormattedTime,
   getFormatedDateWithMonthAndYear,
   getYearsArray,
   getFormatedLastUpdatedDate,
   getDateFromTodaysDate,
+  getFormattedDate
 };

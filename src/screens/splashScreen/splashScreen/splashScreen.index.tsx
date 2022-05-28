@@ -4,7 +4,6 @@ import {initAwsAuth} from '@/src/config/awsConfig.index';
 import {getAuthToken} from '@/src/screens/authentication/authenticationUtils/authenticationUtils.index';
 import {implementReplaceNavigation} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
 import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
-import {SPLASH_SCREEN_IMG} from '@/src/assets/images/svgIcons/introScreen/introScreen.index';
 import {Image, StyleSheet} from 'react-native';
 import {getValueFromAsyncStorage} from '@/src/utils/utilityMethods/asynStorageMethod/asynStorage.index';
 import {ASYNC_STORAGE_CONST} from '@/src/utils/utilityMethods/asynStorageMethod/asynStorage.const.index';
@@ -13,6 +12,8 @@ import {UseAppDispatch} from '@/src/lib/reduxToolkit/hooks';
 import {addFilterKeyData} from '@/src/lib/reduxToolkit/reducers/userProfile/UserProfileSlice';
 import {getMyProfileFromDb} from '@/src/screens/authentication/authenticationNetworkCall/authentication.network.index';
 import {addProfile} from '@/src/lib/reduxToolkit/reducers/profile/ProfileSlice';
+import {SPLASH_SCREEN_ICON} from '@/src/assets/images/pngIcons';
+import {Background} from '@/src/component/common';
 const Splashscreen = (props: any) => {
   const [initialRoute, setInitialRoute] = useState('');
   const dispatch = UseAppDispatch();
@@ -62,7 +63,15 @@ const Splashscreen = (props: any) => {
     }
   }, [initialRoute]); // eslint-disable-line react-hooks/exhaustive-deps
   const {} = props;
-  return <Image style={styles.mainImage} source={SPLASH_SCREEN_IMG} />;
+  return (
+    <Background>
+      <Image
+        resizeMode={'contain'}
+        style={styles.mainImage}
+        source={SPLASH_SCREEN_ICON}
+      />
+    </Background>
+  );
 };
 const styles = StyleSheet.create({
   mainImage: {

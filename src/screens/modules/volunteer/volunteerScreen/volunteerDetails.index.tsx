@@ -22,6 +22,7 @@ import {
   updateVoterDetailsInDb,
 } from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.network';
 import {implementGoBack} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
+import {getFormattedDate} from '@/src/utils/utilityMethods/dateMethod/dateMethod.index';
 
 const VolunteerDetails = (props: any) => {
   const {} = props;
@@ -43,7 +44,7 @@ const VolunteerDetails = (props: any) => {
       ? voterDetails?.gender
       : 'male',
   );
-  const voterType = 'volunteer'
+  const voterType = 'volunteer';
 
   const [genderIndex, setGenderIndex] = useState(0);
   const [volunteerIndex, setVolunteerIndex] = useState(0);
@@ -53,6 +54,7 @@ const VolunteerDetails = (props: any) => {
   const [shaktiKendra, setShaktiKendra] = useState(
     voterDetails?.shaktiKendraName ?? '',
   );
+  const [dob, setDob] = useState(voterDetails?.dob ?? '');
   const [village, setVillage] = useState(voterDetails?.village ?? '');
   const [voterCategory, setVoterCategory] = useState(
     isStringNotEmpty(voterDetails?.voterCategory ?? '')
@@ -113,6 +115,19 @@ const VolunteerDetails = (props: any) => {
       value: electionId,
       onChangeStateMethod: setElectionId,
       fieldType: FIELD_TYPE.text,
+      editable: !fromVoterList,
+      selectTextOnFocus: true,
+    },
+    {
+      headerTitle: 'Date of birth',
+      placeHolder: 'Select your DOB',
+      mandatory: true,
+      keyboardType: KEYBOARD_TYPE.default,
+      value: getFormattedDate(dob),
+      onChangeStateMethod: setDob,
+      fieldType: FIELD_TYPE.date,
+      minimumDate: new Date(2000),
+      maximumDate: new Date(),
       editable: !fromVoterList,
       selectTextOnFocus: true,
     },
@@ -253,6 +268,13 @@ const VolunteerDetails = (props: any) => {
       });
       return false;
     }
+    if (!isStringNotEmpty(dob)) {
+      showPopupMessage({
+        message: 'please enter select voter DOB ',
+        type: 'error',
+      });
+      return false;
+    }
     if (!isStringNotEmpty(familyNumber)) {
       showPopupMessage({
         message: 'please enter valid voter family number',
@@ -310,7 +332,7 @@ const VolunteerDetails = (props: any) => {
       if (isStringNotEmpty(voterDetails?.voterUniqueId ?? '') || landedForAdd) {
         const obj = {
           boothId: boothId,
-          dob: null,
+          dob: dob,
           electionId: electionId,
           familyNumber: familyNumber,
           gender: GENDER_ARRAY[genderIndex].title,

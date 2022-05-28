@@ -17,7 +17,6 @@ import {
   LOGIN_FAILED,
   LOGIN_PWD_TEXTINPUT,
   LOGIN_TITLE,
-  MOBILE_MAX_LENGTH,
   REMEMBER_ME_TEXT,
 } from '@/src/screens/authentication/authenticationUtils/authentication.const.index';
 import styles from '@/src/screens/authentication/authenticationStyle/authentication.stylesheet.index';
@@ -165,7 +164,6 @@ const Login = (props: any) => {
               secureTextEntry={!calculatedShowPassword}
               rightIcon={calculatedShowPassword ? EYE_OPENED : EYE_DASHED}
               rightIconPress={_togglePasswordView}
-              maxLength={MOBILE_MAX_LENGTH}
               onChange={_onChangePassword}
               placeholder={LOGIN_PWD_TEXTINPUT.placeHolder}
               header={LOGIN_PWD_TEXTINPUT.header}

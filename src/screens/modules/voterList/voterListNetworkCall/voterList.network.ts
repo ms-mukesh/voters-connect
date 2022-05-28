@@ -13,7 +13,13 @@ import {
 } from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.const';
 import {showPopupMessage} from '@/src/utils/localPopup';
 
-export const getVoterListFromDb = (pageNo = 1, limit = 1, searchKey = '') => {
+export const getVoterListFromDb = (
+  pageNo = 1,
+  limit = 1,
+  searchKey = '',
+  minimumAge = 1,
+  maximumAge = 150,
+) => {
   return new Promise(async resolve => {
     try {
       const url =
@@ -23,6 +29,10 @@ export const getVoterListFromDb = (pageNo = 1, limit = 1, searchKey = '') => {
         pageNo +
         '&limit=' +
         limit +
+        '&minAge=' +
+        minimumAge +
+        '&maxAge=' +
+        maximumAge +
         '&searchKey=' +
         searchKey;
       const voterListRes = await callApi(
@@ -129,5 +139,3 @@ export const getFilteredVoterDetailsFromDb = (obj: any) => {
     }
   });
 };
-
-

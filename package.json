@@ -15,6 +15,7 @@
     "@react-native-community/datetimepicker": "^6.1.2",
     "@react-native-community/netinfo": "^8.2.0",
     "@react-native-community/push-notification-ios": "^1.9.0",
+    "@react-native-community/slider": "^4.2.2",
     "@react-native-firebase/app": "^14.4.0",
     "@react-native-firebase/messaging": "^14.4.0",
     "@react-native-masked-view/masked-view": "^0.2.6",

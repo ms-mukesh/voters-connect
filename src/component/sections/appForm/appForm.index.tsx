@@ -127,7 +127,7 @@ const AppForm = (props: AppFormType) => {
   };
   const _renderDatePicker = (
     minimumDate = new Date(),
-    // maximumDate = new Date(),
+    maximumDate = new Date(),
   ) => {
     return (
       <DateTimePickerModal
@@ -136,7 +136,7 @@ const AppForm = (props: AppFormType) => {
         onConfirm={date => _onGetValueFromDatePicker(date)}
         onCancel={_closeDatePicker}
         minimumDate={minimumDate}
-        // maximumDate={maximumDate}
+        maximumDate={maximumDate}
       />
     );
   };

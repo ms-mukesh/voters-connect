@@ -13,10 +13,7 @@ import {
 } from '@/src/screens/onBoarding/onBoardingUtils/onBoardUtils.const.index';
 import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
 import {showPopupMessage} from '@/src/utils/localPopup';
-import {
-  isInValidEmailAddress,
-  validatePhoneNumber,
-} from '@/src/utils/validations/fieldValidator.index';
+import {validatePhoneNumber} from '@/src/utils/validations/fieldValidator.index';
 import {
   addVoterDetailsInDb,
   updateVoterDetailsInDb,
@@ -30,6 +27,7 @@ import {
   removeVoterEntryInElectionMaster,
 } from '@/src/screens/modules/election/electionNetworkCall/election.network.index';
 import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
+import {getFormattedDate} from '@/src/utils/utilityMethods/dateMethod/dateMethod.index';
 const VoterDetails = (props: any) => {
   const {} = props;
   const styleSheet = StyleSheetSelection();
@@ -42,6 +40,7 @@ const VoterDetails = (props: any) => {
   const [boothId, setBoothId] = useState(voterDetails?.boothId ?? '');
   const [electionId, setElectionId] = useState(voterDetails?.electionId ?? '');
   const [apiLoader, setApiLoader] = useState(false);
+  const [dob, setDob] = useState(voterDetails?.dob ?? '');
   const [familyNumber, setFamilyNumber] = useState(
     voterDetails?.familyNumber ?? '',
   );
@@ -64,7 +63,7 @@ const VoterDetails = (props: any) => {
       : 'red',
   );
   const [volunteerIndex, setVolunteerIndex] = useState(0);
-  const voterType = 'normal'
+  const voterType = 'normal';
   const [voterCategoryIndex, setVoterCategoryIndex] = useState(0);
   const [mandalName, setMandalName] = useState(voterDetails?.mandalName ?? '');
   const _onChangeGender = (index: number) => {
@@ -119,6 +118,19 @@ const VoterDetails = (props: any) => {
       value: electionId,
       onChangeStateMethod: setElectionId,
       fieldType: FIELD_TYPE.text,
+      editable: !fromVoterList,
+      selectTextOnFocus: true,
+    },
+    {
+      headerTitle: 'Date of birth',
+      placeHolder: 'Select your DOB',
+      mandatory: true,
+      keyboardType: KEYBOARD_TYPE.default,
+      value: getFormattedDate(dob),
+      onChangeStateMethod: setDob,
+      fieldType: FIELD_TYPE.date,
+      minimumDate: new Date(2000),
+      maximumDate: new Date(),
       editable: !fromVoterList,
       selectTextOnFocus: true,
     },
@@ -237,6 +249,13 @@ const VoterDetails = (props: any) => {
       });
       return false;
     }
+    if (!isStringNotEmpty(dob)) {
+      showPopupMessage({
+        message: 'please enter select voter DOB ',
+        type: 'error',
+      });
+      return false;
+    }
     if (!isStringNotEmpty(familyNumber)) {
       showPopupMessage({
         message: 'please enter valid voter family number',
@@ -280,7 +299,7 @@ const VoterDetails = (props: any) => {
       if (isStringNotEmpty(voterDetails?.voterUniqueId ?? '') || landedForAdd) {
         const obj = {
           boothId: boothId,
-          dob: null,
+          dob: dob,
           electionId: electionId,
           familyNumber: familyNumber,
           gender: GENDER_ARRAY[genderIndex].title,

@@ -20,10 +20,11 @@ import PlaceHolder from '@/src/component/sections/placeHolder/placeHolder.index'
 import {hp, wp} from '@/src/utils/screenRatio';
 import VoterCard from '@/src/screens/modules/voterList/voterListCommon/voterCard.index';
 import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
-import {textColor} from '@/src/utils/color';
+import {color, textColor} from '@/src/utils/color';
 import FabButton from '@/src/component/common/fabButton/fabButton.index';
 import {FILTER_ICON} from '@/src/assets/images/svgIcons/generalIcons/generalIcon.index';
 import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
+import Slider from '@react-native-community/slider';
 const VoterList = (props: any) => {
   const {} = props;
   const PAGE_LIMIT = 7;
@@ -39,7 +40,9 @@ const VoterList = (props: any) => {
   const [femaleCount, setFemaleCount] = useState(0);
   const [otherCount, setOtherCount] = useState(0);
   const [filterSearchData, setFilterSearchData] = useState([]);
+  const [selectedAge, setSelectedAge]: any = useState(1);
   const styleSheet = StyleSheetSelection();
+
   const calculatedPageNo = useMemo(() => {
     return pageNo;
   }, [pageNo]);
@@ -136,6 +139,8 @@ const VoterList = (props: any) => {
     requireBottomLoader = false,
     limit = PAGE_LIMIT,
     searchKey = '',
+    minAge = selectedAge,
+    maxAge = 150,
   ) => {
     setLoading(requireLoader);
     setBottomLoading(requireBottomLoader);
@@ -144,6 +149,8 @@ const VoterList = (props: any) => {
       pageNoLocal,
       limit,
       searchKey,
+      minAge,
+      maxAge,
     );
     if (voterListApiRes) {
       setMaleCount(voterListApiRes?.maleCount ?? 0);
@@ -228,7 +235,7 @@ const VoterList = (props: any) => {
     const paramsObj = {
       landedForAdd: true,
       refereshList: _refereshList,
-      wantToAddVolunteer:false
+      wantToAddVolunteer: false,
     };
     implementStackNavigation(
       props?.navigation ?? null,
@@ -257,6 +264,10 @@ const VoterList = (props: any) => {
       SCREEN_NAME.appFilterScreen,
       paramsObj,
     );
+  };
+  const _onChangeAge = async (e: any) => {
+    setSelectedAge(e);
+    await _setVoterListFromDb(1, true, false, PAGE_LIMIT, searchText, e, 150);
   };
 
   useEffect(() => {
@@ -302,6 +313,22 @@ const VoterList = (props: any) => {
         </CustomText>
       </View>
       <View style={styleSheet.dividerViewRegular} />
+      <View style={{width: '90%', alignSelf: 'center'}}>
+        <CustomText style={styleSheet.regularBold}>
+          {'Age:' + selectedAge + ' - 150'}
+        </CustomText>
+        <Slider
+          style={{width: '100%', height: 40, alignSelf: 'center'}}
+          minimumValue={1}
+          maximumValue={150}
+          minimumTrackTintColor={color.disableButton}
+          maximumTrackTintColor={color.enableButton}
+          step={1}
+          onSlidingComplete={_onChangeAge}
+        />
+      </View>
+      <View style={styleSheet.dividerViewRegular} />
+
       {(voterList?.length > 0 || loading) && (
         <CustomFlatList
           data={

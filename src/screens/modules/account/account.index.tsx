@@ -1,5 +1,9 @@
 import React, {useEffect} from 'react';
-import {AppCard, Background, CustomText} from '@/src/component/common';
+import {
+  AppCard,
+  Background,
+  CustomText,
+} from '@/src/component/common';
 import {AppHeader} from '@/src/component/section.index';
 import {getMyProfileFromDb} from '@/src/screens/authentication/authenticationNetworkCall/authentication.network.index';
 import {Pressable, View} from 'react-native';
@@ -9,6 +13,7 @@ import {addProfile} from '@/src/lib/reduxToolkit/reducers/profile/ProfileSlice';
 import CircularImage from '@/src/component/common/circularImage/circularImage.index';
 import {implementStackNavigation} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
 import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
+import {executeLogout} from '@/src/screens/authentication/authenticationUtils/authenticationUtils.index';
 const Account = (props: any) => {
   const {} = props;
   const {data}: any = UseAppSelector(state => state.profile);
@@ -83,6 +88,12 @@ const Account = (props: any) => {
               </CustomText>
               <View style={styleSheet.dividerView} />
             </AppCard>
+            <View style={styleSheet.dividerViewRegular} />
+            <Pressable onPress={executeLogout}>
+              <AppCard>
+                <CustomText style={styleSheet.xLargeBold}>Log out</CustomText>
+              </AppCard>
+            </Pressable>
           </View>
         )}
       </View>

@@ -9,7 +9,9 @@ import {implementStackNavigation} from '@/src/utils/utilityMethods/generalUtilit
 import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
 import {hp, wp} from '@/src/utils/screenRatio';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
-import {VOTER_INTRO_ICON} from '@/src/assets/images/pngIcons';
+import {
+  SPLASH_SCREEN_ICON,
+} from '@/src/assets/images/pngIcons';
 const Entrance = (props: any) => {
   const _onPressStartButton = () => {
     implementStackNavigation(props?.navigation ?? null, SCREEN_NAME.login);
@@ -28,8 +30,9 @@ const Entrance = (props: any) => {
       textAlign: 'center',
     },
     voterIntroIcon: {
-      height: hp(50),
+      height: hp(55),
       width: wp(100),
+      marginTop: hp(10),
     },
   });
   return (
@@ -37,8 +40,8 @@ const Entrance = (props: any) => {
       <View style={styleSheet.mainView}>
         <View style={styles.iconView}>
           <Image
-            resizeMode={'contain'}
-            source={VOTER_INTRO_ICON}
+            // resizeMode={'cover'}
+            source={SPLASH_SCREEN_ICON}
             style={styles.voterIntroIcon}
           />
         </View>
