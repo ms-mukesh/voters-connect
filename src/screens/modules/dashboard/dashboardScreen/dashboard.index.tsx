@@ -36,10 +36,17 @@ const Dashboard = (props: any) => {
       SCREEN_NAME.electionList,
     );
   };
+  const _onPressVolunteerList = () => {
+    implementStackNavigation(
+      props?.navigation ?? null,
+      SCREEN_NAME.volunteerList,
+    );
+  };
   const dashboardMenu = [
     {title: 'Voter list', icon: VOTER_LIST, callback: _onPressVoterList},
     {title: 'Add Voter', icon: ADD_VOTER, callback: _addBulkData},
     {title: 'Election List', icon: ADD_VOTER, callback: _onPressElectionList},
+    {title: 'Volunteer List', icon: ADD_VOTER, callback: _onPressVolunteerList},
   ];
   const _renderDashboardMenu = ({item}: any) => {
     return (

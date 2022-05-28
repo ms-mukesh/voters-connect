@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {AppButton, Background, Loader} from '@/src/component/common';
+import {Background, Loader} from '@/src/component/common';
 import {AppHeader} from '@/src/component/section.index';
-import {KEYBOARD_TYPE, SOMETHING_WENT_WRONG} from '@/src/constant/generalConst';
+import {KEYBOARD_TYPE} from '@/src/constant/generalConst';
 import {FIELD_TYPE} from '@/src/component/sections/appForm/appForm.const.index';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
 import {View} from 'react-native';
@@ -21,27 +21,20 @@ import {
   addVoterDetailsInDb,
   updateVoterDetailsInDb,
 } from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.network';
-import {
-  implementGoBack,
-  implementStackNavigation,
-} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
-import {
-  addVoterEntryInElectionMaster,
-  removeVoterEntryInElectionMaster,
-} from '@/src/screens/modules/election/electionNetworkCall/election.network.index';
-import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
-const VoterDetails = (props: any) => {
+import {implementGoBack} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
+
+const VolunteerDetails = (props: any) => {
   const {} = props;
   const styleSheet = StyleSheetSelection();
   const voterDetails = props?.route?.params?.voterDetails ?? null;
   const fromVoterList = props?.route?.params?.fromVoterList ?? false;
   const landedForAdd = props?.route?.params?.landedForAdd ?? false;
-  const isVoteGiven = props?.route?.params?.isVoted ?? false;
-  const voterElectionId = props?.route?.params?.electionId ?? 0;
   const [voterName, setVoterName] = useState(voterDetails?.voterName ?? '');
   const [boothId, setBoothId] = useState(voterDetails?.boothId ?? '');
   const [electionId, setElectionId] = useState(voterDetails?.electionId ?? '');
   const [apiLoader, setApiLoader] = useState(false);
+  const [emailId, setEmailId] = useState(voterDetails?.email ?? '');
+  const [password, setPassword] = useState(voterDetails?.password ?? '');
   const [familyNumber, setFamilyNumber] = useState(
     voterDetails?.familyNumber ?? '',
   );
@@ -50,7 +43,10 @@ const VoterDetails = (props: any) => {
       ? voterDetails?.gender
       : 'male',
   );
+  const voterType = 'volunteer'
+
   const [genderIndex, setGenderIndex] = useState(0);
+  const [volunteerIndex, setVolunteerIndex] = useState(0);
   const [phoneNumber, setPhoneNumber] = useState(
     voterDetails?.phoneNumber ?? '',
   );
@@ -63,21 +59,19 @@ const VoterDetails = (props: any) => {
       ? voterDetails?.voterCategory
       : 'red',
   );
-  const [volunteerIndex, setVolunteerIndex] = useState(0);
-  const voterType = 'normal'
   const [voterCategoryIndex, setVoterCategoryIndex] = useState(0);
   const [mandalName, setMandalName] = useState(voterDetails?.mandalName ?? '');
   const _onChangeGender = (index: number) => {
     setGenderIndex(index);
     setGender(GENDER_ARRAY[index].title);
   };
-  const _onChangeVoterCategory = (index: number) => {
-    setVoterCategoryIndex(index);
-    setVoterCategory(VOTER_CATEGORY[index].title);
-  };
   const _onChangeVoterType = () => {
     // setVolunteerIndex(index);
     // setVoterType(VOTER_TYPE_ARRAY[index].title);
+  };
+  const _onChangeVoterCategory = (index: number) => {
+    setVoterCategoryIndex(index);
+    setVoterCategory(VOTER_CATEGORY[index].title);
   };
   useEffect(() => {
     setGenderIndex(GENDER_ARRAY.findIndex(item => item.title === gender));
@@ -144,7 +138,7 @@ const VoterDetails = (props: any) => {
       fieldType: FIELD_TYPE.radio,
       rightComponent: null,
       radioButtonData: VOTER_TYPE_ARRAY,
-      editable: false,
+      editable: !fromVoterList,
     },
     {
       headerTitle: 'Voter category',
@@ -213,6 +207,28 @@ const VoterDetails = (props: any) => {
       editable: !fromVoterList,
       selectTextOnFocus: false,
     },
+    {
+      headerTitle: 'Email Id',
+      placeHolder: 'Enter Email Id',
+      mandatory: true,
+      keyboardType: KEYBOARD_TYPE.default,
+      value: emailId,
+      onChangeStateMethod: setEmailId,
+      fieldType: FIELD_TYPE.text,
+      editable: !fromVoterList,
+      selectTextOnFocus: false,
+    },
+    {
+      headerTitle: 'Password',
+      placeHolder: 'Enter Password',
+      mandatory: true,
+      keyboardType: KEYBOARD_TYPE.default,
+      value: password,
+      onChangeStateMethod: setPassword,
+      fieldType: FIELD_TYPE.text,
+      editable: !fromVoterList,
+      selectTextOnFocus: false,
+    },
   ];
 
   const _iWillValidateFormField = () => {
@@ -272,6 +288,20 @@ const VoterDetails = (props: any) => {
       });
       return false;
     }
+    if (!isInValidEmailAddress(emailId)) {
+      showPopupMessage({
+        message: 'please enter valid email ID',
+        type: 'error',
+      });
+      return false;
+    }
+    if (!isStringNotEmpty(password) || password.length < 8) {
+      showPopupMessage({
+        message: 'please enter valid password with at least 8 character',
+        type: 'error',
+      });
+      return false;
+    }
     return true;
   };
   const _onPressSaveButton = async () => {
@@ -292,6 +322,8 @@ const VoterDetails = (props: any) => {
           voterName: voterName,
           voterUniqueId: voterDetails?.voterUniqueId ?? '',
           voterType: VOTER_TYPE_ARRAY[volunteerIndex].title,
+          email: emailId,
+          password: password,
         };
         setApiLoader(true);
         if (landedForAdd) {
@@ -313,70 +345,24 @@ const VoterDetails = (props: any) => {
       }
     }
   };
-  const _updateVoterCurrentStatus = async () => {
-    const obj = {
-      VoterId: voterDetails?.voterUniqueId,
-      ElectionId: voterElectionId,
-    };
-    setApiLoader(true);
-    let updateApiRes: any = false;
-    if (isVoteGiven) {
-      updateApiRes = await removeVoterEntryInElectionMaster({data: obj});
-    } else {
-      updateApiRes = await addVoterEntryInElectionMaster({data: obj});
-    }
-
-    if (updateApiRes) {
-      await props?.route?.params?.refereshList();
-      implementGoBack(props?.navigation ?? null);
-    } else {
-      showPopupMessage({message: SOMETHING_WENT_WRONG, type: 'error'});
-    }
-    setApiLoader(false);
-  };
-  const _onPressNearByVolunteer = () => {
-    const paramsObj = {
-      fromVoterList: true,
-      shaktiKendraName: shaktiKendra,
-      mandalName: mandalName,
-      village: village,
-      boothId: boothId,
-      familyNumber: familyNumber,
-    };
-    implementStackNavigation(
-      props?.navigation ?? null,
-      SCREEN_NAME.volunteerList,
-      paramsObj,
-    );
-  };
 
   return (
     <Background>
       <AppHeader
-        title={'Voter details'}
+        title={'Volunteer details'}
         navigation={props?.navigation ?? null}
-        rightText={fromVoterList ? 'mark' : ''}
-        onRightIconPress={fromVoterList ? _updateVoterCurrentStatus : null}
       />
       <Loader isLoading={apiLoader} />
       <View style={styleSheet.dividerViewRegular} />
       <View style={styleSheet.contentMainView}>
         <AppForm
-          onPressButton={
-            fromVoterList ? _updateVoterCurrentStatus : _onPressSaveButton
-          }
-          buttonText={fromVoterList ? 'update current vote status' : 'Save'}
+          onPressButton={_onPressSaveButton}
+          buttonText={'Save'}
           fields={formFields}
         />
-        {fromVoterList && (
-          <AppButton
-            title={'Get Near By Volunteer'}
-            onPress={_onPressNearByVolunteer}
-          />
-        )}
         <View style={styleSheet.dividerViewRegular} />
       </View>
     </Background>
   );
 };
-export default VoterDetails;
+export default VolunteerDetails;

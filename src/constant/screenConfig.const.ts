@@ -21,4 +21,5 @@ export const SCREEN_NAME = {
   electionVotersTab: 'electionVotersTab',
   appFilterScreen: 'appFilterScreen',
   volunteerList: 'volunteerList',
+  volunteerDetails:'volunteerDetails'
 };

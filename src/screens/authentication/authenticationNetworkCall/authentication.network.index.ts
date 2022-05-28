@@ -19,6 +19,7 @@ import {
   SUCCESS_API_RESPONSE_CODE,
 } from '@/src/constant/envConfig.index';
 import {USER_ACTION_STACK} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.network.const';
+import {showPopupMessage} from '@/src/utils/localPopup';
 
 export const generateOtpFromApi = (
   fieldValue = '',
@@ -144,6 +145,7 @@ export const loginUserApi = (emailId = '', password = '') => {
       ) {
         return resolve(loginUserApiRes);
       } else {
+        showPopupMessage({message: 'Invalid details', type: 'error'});
         return resolve(false);
       }
     } catch (ex) {

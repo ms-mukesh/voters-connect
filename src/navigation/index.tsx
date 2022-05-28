@@ -25,6 +25,7 @@ import AddNewElection from '@/src/screens/modules/election/electionScreen/addNew
 import ElectionVotersTab from '@/src/screens/modules/election/electionScreen/electionVoters/electionVoters.tab.index';
 import AppFilterScreen from '@/src/screens/commonScreen/filterScreen/appFilterScreen.index';
 import Volunteer from '@/src/screens/modules/volunteer/volunteerScreen/volunteer.index';
+import VolunteerDetails from '@/src/screens/modules/volunteer/volunteerScreen/volunteerDetails.index';
 
 const AppNavigation = () => {
   return (
@@ -97,6 +98,10 @@ const AppNavigation = () => {
           component={AppFilterScreen}
         />
         <Stack.Screen name={SCREEN_NAME.volunteerList} component={Volunteer} />
+        <Stack.Screen
+          name={SCREEN_NAME.volunteerDetails}
+          component={VolunteerDetails}
+        />
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>

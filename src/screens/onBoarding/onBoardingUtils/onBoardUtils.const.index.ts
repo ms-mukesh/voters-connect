@@ -82,6 +82,7 @@ export const GENDER_ARRAY = [
   {title: 'male'},
   {title: 'other'},
 ];
+export const VOTER_TYPE_ARRAY = [{title: 'normal'}, {title: 'volunteer'}];
 export const VOTER_CATEGORY = [
   {title: 'red'},
   {title: 'green'},

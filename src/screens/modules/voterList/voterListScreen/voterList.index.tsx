@@ -228,6 +228,7 @@ const VoterList = (props: any) => {
     const paramsObj = {
       landedForAdd: true,
       refereshList: _refereshList,
+      wantToAddVolunteer:false
     };
     implementStackNavigation(
       props?.navigation ?? null,

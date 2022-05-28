@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import { Background, CustomFlatList, Loader } from "@/src/component/common";
+import {Background, CustomFlatList, Loader} from '@/src/component/common';
 import {AppHeader} from '@/src/component/section.index';
 import {LEFT_BACK_ARROW} from '@/src/assets/images/svgIcons/generalIcons/generalIcon.index';
 import {getVolunteerListFromDb} from '@/src/screens/modules/volunteer/volunteerNetworkCall/volunteer.network.index';
-import StyleSheetSelection from "@/src/screens/styleSheet/styleSheet.index";
-import { View } from "react-native";
-import VoterCard from "@/src/screens/modules/voterList/voterListCommon/voterCard.index";
+import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
+import {View} from 'react-native';
+import VoterCard from '@/src/screens/modules/voterList/voterListCommon/voterCard.index';
+import {implementStackNavigation} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
+import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
+import FabButton from '@/src/component/common/fabButton/fabButton.index';
 const Volunteer = (props: any) => {
   const {} = props;
   const fromVoterList = props?.route?.params?.fromVoterList ?? false;
@@ -38,14 +41,39 @@ const Volunteer = (props: any) => {
   useEffect(() => {
     _setVolunteerList().then(() => {});
   }, []);
-  const _renderVolunteerList = ({item,index}:any)=>{
-    return(
+
+  const _navigateToVolunteerDetails = (item: any) => {
+    const paramsObj = {
+      voterDetails: item,
+      refereshList: _setVolunteerList,
+      wantToAddVolunteer: true,
+    };
+    implementStackNavigation(
+      props?.navigation ?? null,
+      SCREEN_NAME.volunteerDetails,
+      paramsObj,
+    );
+  };
+  const _renderVolunteerList = ({item}: any) => {
+    return (
       <VoterCard
-        // onPressCard={() => _navigateToVoterDetails(item)}
+        onPressCard={() => _navigateToVolunteerDetails(item)}
         data={item}
       />
-    )
-  }
+    );
+  };
+  const _onPressAddNewVolunteer = () => {
+    const paramsObj = {
+      landedForAdd: true,
+      refereshList: _setVolunteerList,
+      wantToAddVolunteer: true,
+    };
+    implementStackNavigation(
+      props?.navigation ?? null,
+      SCREEN_NAME.volunteerDetails,
+      paramsObj,
+    );
+  };
 
   return (
     <Background>
@@ -55,8 +83,9 @@ const Volunteer = (props: any) => {
         title={'Volunteer List'}
         navigation={fromVoterList ? props?.navigation ?? null : null}
       />
-      <View style={styleSheet.dividerViewRegular}/>
-      <CustomFlatList data={volunteerList} renderItem={_renderVolunteerList}/>
+      <View style={styleSheet.dividerViewRegular} />
+      <CustomFlatList data={volunteerList} renderItem={_renderVolunteerList} />
+      {!fromVoterList && <FabButton onPress={_onPressAddNewVolunteer} />}
     </Background>
   );
 };
