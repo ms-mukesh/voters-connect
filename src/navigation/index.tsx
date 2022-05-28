@@ -21,9 +21,10 @@ import SearchScreen from '@/src/screens/commonScreen/searchScreen/searchScreen.i
 import VoterList from '@/src/screens/modules/voterList/voterListScreen/voterList.index';
 import VoterDetails from '@/src/screens/modules/voterList/voterListScreen/voterDetails.index';
 import ElectionList from '@/src/screens/modules/election/electionScreen/election.index';
-import AddNewElection from "@/src/screens/modules/election/electionScreen/addNewElection.index";
-import ElectionVotersTab from "@/src/screens/modules/election/electionScreen/electionVoters/electionVoters.tab.index";
-import AppFilterScreen from "@/src/screens/commonScreen/filterScreen/appFilterScreen.index";
+import AddNewElection from '@/src/screens/modules/election/electionScreen/addNewElection.index';
+import ElectionVotersTab from '@/src/screens/modules/election/electionScreen/electionVoters/electionVoters.tab.index';
+import AppFilterScreen from '@/src/screens/commonScreen/filterScreen/appFilterScreen.index';
+import Volunteer from '@/src/screens/modules/volunteer/volunteerScreen/volunteer.index';
 
 const AppNavigation = () => {
   return (
@@ -95,6 +96,7 @@ const AppNavigation = () => {
           name={SCREEN_NAME.appFilterScreen}
           component={AppFilterScreen}
         />
+        <Stack.Screen name={SCREEN_NAME.volunteerList} component={Volunteer} />
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>

@@ -129,3 +129,5 @@ export const getFilteredVoterDetailsFromDb = (obj: any) => {
     }
   });
 };
+
+

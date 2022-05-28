@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Background, Loader} from '@/src/component/common';
+import {AppButton, Background, Loader} from '@/src/component/common';
 import {AppHeader} from '@/src/component/section.index';
 import {KEYBOARD_TYPE, SOMETHING_WENT_WRONG} from '@/src/constant/generalConst';
 import {FIELD_TYPE} from '@/src/component/sections/appForm/appForm.const.index';
@@ -16,12 +16,16 @@ import {validatePhoneNumber} from '@/src/utils/validations/fieldValidator.index'
 import {
   addVoterDetailsInDb,
   updateVoterDetailsInDb,
-} from "@/src/screens/modules/voterList/voterListNetworkCall/voterList.network";
-import {implementGoBack} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
+} from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.network';
+import {
+  implementGoBack,
+  implementStackNavigation,
+} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
 import {
   addVoterEntryInElectionMaster,
   removeVoterEntryInElectionMaster,
 } from '@/src/screens/modules/election/electionNetworkCall/election.network.index';
+import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
 const VoterDetails = (props: any) => {
   const {} = props;
   const styleSheet = StyleSheetSelection();
@@ -304,6 +308,21 @@ const VoterDetails = (props: any) => {
     }
     setApiLoader(false);
   };
+  const _onPressNearByVolunteer = () => {
+    const paramsObj = {
+      fromVoterList: true,
+      shaktiKendraName: shaktiKendra,
+      mandalName: mandalName,
+      village: village,
+      boothId: boothId,
+      familyNumber: familyNumber,
+    };
+    implementStackNavigation(
+      props?.navigation ?? null,
+      SCREEN_NAME.volunteerList,
+      paramsObj,
+    );
+  };
 
   return (
     <Background>
@@ -323,6 +342,13 @@ const VoterDetails = (props: any) => {
           buttonText={fromVoterList ? 'update current vote status' : 'Save'}
           fields={formFields}
         />
+        {fromVoterList && (
+          <AppButton
+            title={'Get Near By Volunteer'}
+            onPress={_onPressNearByVolunteer}
+          />
+        )}
+        <View style={styleSheet.dividerViewRegular} />
       </View>
     </Background>
   );

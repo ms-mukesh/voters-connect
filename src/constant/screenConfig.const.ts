@@ -20,4 +20,5 @@ export const SCREEN_NAME = {
   addNewElection: 'addNewElection',
   electionVotersTab: 'electionVotersTab',
   appFilterScreen: 'appFilterScreen',
+  volunteerList: 'volunteerList',
 };
