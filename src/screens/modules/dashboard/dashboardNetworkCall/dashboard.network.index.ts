@@ -3,10 +3,13 @@ import callApi from '@/src/utils/api';
 import {API_METHOD} from '@/src/constant/network';
 import {
   ADD_BULK_VOTER_LIST_ENDPOINT,
+  GET_DASHBOARD_DETAILS,
   USER_ACTION_STACK,
 } from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.network.const';
 import {showPopupMessage} from '@/src/utils/localPopup';
 import {SUCCESS_API_RESPONSE_CODE} from '@/src/constant/envConfig.index';
+import useSWR, {mutate, SWRConfiguration} from 'swr';
+import fetcher from '@/src/lib/swr';
 
 export const addBulkVoterListInDb = (dataArray: any = []) => {
   return new Promise(async resolve => {
@@ -33,3 +36,18 @@ export const addBulkVoterListInDb = (dataArray: any = []) => {
     }
   });
 };
+
+export function GetDashboardDetails(options?: SWRConfiguration) {
+  const {data, error} = useSWR<any>(
+    USER_ACTION_STACK + GET_DASHBOARD_DETAILS,
+    url => fetcher<any>(url),
+    options,
+  );
+
+  return {
+    data: data?.data,
+    loading: !error && !data,
+    error,
+    mutate,
+  };
+}

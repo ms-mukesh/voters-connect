@@ -42,6 +42,7 @@ export const color = {
   skyBlue: 'rgba(0, 165, 140, 0.1)',
   custom_modal_background_color: '#817889',
   modalBackground: 'rgba(42,42,42,0.66)',
+  yellow: 'yellow',
 };
 export const textColor = {
   primaryText: '#262626',
