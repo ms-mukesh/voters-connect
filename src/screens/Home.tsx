@@ -18,7 +18,6 @@ import {color} from '@/src/utils/color';
 import {RootTabParams} from '@/src/types/tab';
 import {UseAppDispatch, UseAppSelector} from '@/src/lib/reduxToolkit/hooks';
 import {addTodo} from '@/src/lib/reduxToolkit/reducers/todo/TodoSlice';
-import {ENV_NAME} from '../constant/envConfig.index';
 import {AppButton} from '@/src/component/common';
 import {executeLogout} from '@/src/screens/authentication/authenticationUtils/authenticationUtils.index';
 
@@ -49,9 +48,6 @@ const Home = ({}: Props) => {
   const rotateImage = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (__DEV__) {
-      console.log('env name--', ENV_NAME);
-    }
     // simple animation
     Animated.timing(rotateImage, {
       toValue: 1,

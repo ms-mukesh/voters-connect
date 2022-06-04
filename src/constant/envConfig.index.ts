@@ -1,12 +1,3 @@
-import Config from 'react-native-config';
-export const {
-  ENV_NAME,
-  USER_POOL_ID,
-  USER_POOL_WEB_CLIENT_ID,
-  REGION,
-  X_API_KEY,
-} = Config;
-
 export const API_BASE_URL = 'http://139.59.45.0:3000/';
 export const SUCCESS_API_RESPONSE_CODE = 200;
 
