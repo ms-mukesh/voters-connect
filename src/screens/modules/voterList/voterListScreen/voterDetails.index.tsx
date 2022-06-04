@@ -4,7 +4,7 @@ import {AppHeader} from '@/src/component/section.index';
 import {KEYBOARD_TYPE, SOMETHING_WENT_WRONG} from '@/src/constant/generalConst';
 import {FIELD_TYPE} from '@/src/component/sections/appForm/appForm.const.index';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {AppForm} from '@/src/component/sections/section.index';
 import {
   GENDER_ARRAY,
@@ -28,12 +28,27 @@ import {
 } from '@/src/screens/modules/election/electionNetworkCall/election.network.index';
 import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
 import {getFormattedDate} from '@/src/utils/utilityMethods/dateMethod/dateMethod.index';
+import {hp, wp} from '@/src/utils/screenRatio';
+import {
+  CALL_BLUE,
+  MAIL_WHITE,
+  WHATSUP_ICON,
+} from '@/src/assets/images/svgIcons/accountSvgIcon/accountSvg.index';
+import {color} from '@/src/utils/color';
+import AppIconButton from '@/src/component/common/appIconButton/appIconButton.index';
+import {
+  connectToCall,
+  sendSms,
+  sendWhatsUpMessage,
+} from '@/src/utils/utilityMethods/connectMethod/connectMethod.index';
 const VoterDetails = (props: any) => {
   const {} = props;
   const styleSheet = StyleSheetSelection();
   const voterDetails = props?.route?.params?.voterDetails ?? null;
   const fromVoterList = props?.route?.params?.fromVoterList ?? false;
   const landedForAdd = props?.route?.params?.landedForAdd ?? false;
+  const landedToEditMyProfile =
+    props?.route?.params?.landedToEditMyProfile ?? false;
   const isVoteGiven = props?.route?.params?.isVoted ?? false;
   const voterElectionId = props?.route?.params?.electionId ?? 0;
   const [voterName, setVoterName] = useState(voterDetails?.voterName ?? '');
@@ -372,14 +387,37 @@ const VoterDetails = (props: any) => {
   return (
     <Background>
       <AppHeader
-        title={'Voter details'}
+        title={props?.route?.params?.headerTitle ?? 'Voter details'}
         navigation={props?.navigation ?? null}
         rightText={fromVoterList ? 'mark' : ''}
         onRightIconPress={fromVoterList ? _updateVoterCurrentStatus : null}
       />
       <Loader isLoading={apiLoader} />
+
       <View style={styleSheet.dividerViewRegular} />
       <View style={styleSheet.contentMainView}>
+        {!landedToEditMyProfile && (
+          <View style={{flexDirection: 'row'}}>
+            <AppIconButton
+              icon={WHATSUP_ICON}
+              containerStyle={styles.iconButton}
+              onPress={() =>
+                sendWhatsUpMessage(voterDetails?.phoneNumber ?? '')
+              }
+            />
+            <AppIconButton
+              onPress={() => connectToCall(voterDetails?.phoneNumber ?? '')}
+              icon={CALL_BLUE}
+              containerStyle={styles.iconButton}
+            />
+            <AppIconButton
+              onPress={() => sendSms(voterDetails?.phoneNumber ?? '')}
+              icon={MAIL_WHITE}
+              containerStyle={styles.iconButton}
+            />
+          </View>
+        )}
+        <View style={styleSheet.dividerViewRegular} />
         <AppForm
           onPressButton={
             fromVoterList ? _updateVoterCurrentStatus : _onPressSaveButton
@@ -387,6 +425,7 @@ const VoterDetails = (props: any) => {
           buttonText={fromVoterList ? 'update current vote status' : 'Save'}
           fields={formFields}
         />
+
         {fromVoterList && (
           <AppButton
             title={'Get Near By Volunteer'}
@@ -398,4 +437,17 @@ const VoterDetails = (props: any) => {
     </Background>
   );
 };
+const styles = StyleSheet.create({
+  iconButton: {
+    marginLeft: wp(2),
+  },
+  contactCircle: {
+    height: hp(8),
+    width: hp(8),
+    borderRadius: hp(4),
+    backgroundColor: color.lightSky,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 export default VoterDetails;

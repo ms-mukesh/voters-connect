@@ -1,9 +1,5 @@
 import React, {useEffect} from 'react';
-import {
-  AppCard,
-  Background,
-  CustomText,
-} from '@/src/component/common';
+import {AppCard, Background, CustomText} from '@/src/component/common';
 import {AppHeader} from '@/src/component/section.index';
 import {getMyProfileFromDb} from '@/src/screens/authentication/authenticationNetworkCall/authentication.network.index';
 import {Pressable, View} from 'react-native';
@@ -27,7 +23,12 @@ const Account = (props: any) => {
     }
   };
   const _onPressEdit = () => {
-    const paramsObj = {voterDetails: data, refereshList: _setMyProfileData};
+    const paramsObj = {
+      voterDetails: data,
+      refereshList: _setMyProfileData,
+      headerTitle: 'Edit Profile',
+      landedToEditMyProfile:true
+    };
     implementStackNavigation(
       props?.navigation ?? null,
       SCREEN_NAME.voterDetails,

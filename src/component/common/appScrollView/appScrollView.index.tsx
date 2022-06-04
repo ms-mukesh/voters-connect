@@ -24,6 +24,7 @@ const AppScrollView = (props: AppScrollViewType) => {
         styles.contentContainerStyle,
         contentContainerStyle,
       ]}
+      style={{flex: 1}}
       showsVerticalScrollIndicator={showsVerticalScrollIndicator}
       showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
       nestedScrollEnabled={nestedScrollEnabled}>
@@ -33,9 +34,9 @@ const AppScrollView = (props: AppScrollViewType) => {
 };
 const styles = StyleSheet.create({
   contentContainerStyle: {
-    // flex:1,
-    height: '100%',
-    width: '100%',
+    flex:1,
+    // height: '100%',
+    // width: '100%',
   },
 });
 export default AppScrollView;

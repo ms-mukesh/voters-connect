@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {hp} from '@/src/utils/screenRatio';
-import {gradientColors, textColor} from '@/src/utils/color';
+import {color, gradientColors, textColor} from '@/src/utils/color';
 import LinearGradient from 'react-native-linear-gradient';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
 interface AppCardProps {
@@ -47,14 +47,26 @@ const styles = StyleSheet.create({
     padding: hp(0.1),
     borderRadius: hp(1.5),
     borderColor: textColor.primary,
+    elevation: 5,
+    shadowColor: color.shadow_color,
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
+
   mainView: {
-    backgroundColor: '#ffffff',
+    // backgroundColor: '#ffffff',
+    backgroundColor: color.light_background,
     width: '100%',
     padding: hp(2),
     borderRadius: hp(1.5),
-    borderColor: textColor.lightGray,
+    borderColor: textColor.primary,
     borderWidth: hp(0.1),
+    elevation: 5,
+    shadowColor: color.shadow_color,
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
 });
 export default AppCard;

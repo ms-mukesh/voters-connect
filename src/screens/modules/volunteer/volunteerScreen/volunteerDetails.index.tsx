@@ -4,7 +4,7 @@ import {AppHeader} from '@/src/component/section.index';
 import {KEYBOARD_TYPE} from '@/src/constant/generalConst';
 import {FIELD_TYPE} from '@/src/component/sections/appForm/appForm.const.index';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {AppForm} from '@/src/component/sections/section.index';
 import {
   GENDER_ARRAY,
@@ -23,6 +23,18 @@ import {
 } from '@/src/screens/modules/voterList/voterListNetworkCall/voterList.network';
 import {implementGoBack} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
 import {getFormattedDate} from '@/src/utils/utilityMethods/dateMethod/dateMethod.index';
+import {wp} from '@/src/utils/screenRatio';
+import AppIconButton from '@/src/component/common/appIconButton/appIconButton.index';
+import {
+  CALL_BLUE,
+  MAIL_WHITE,
+  WHATSUP_ICON,
+} from '@/src/assets/images/svgIcons/accountSvgIcon/accountSvg.index';
+import {
+  connectToCall,
+  sendSms,
+  sendWhatsUpMessage,
+} from '@/src/utils/utilityMethods/connectMethod/connectMethod.index';
 
 const VolunteerDetails = (props: any) => {
   const {} = props;
@@ -375,8 +387,25 @@ const VolunteerDetails = (props: any) => {
         navigation={props?.navigation ?? null}
       />
       <Loader isLoading={apiLoader} />
-      <View style={styleSheet.dividerViewRegular} />
       <View style={styleSheet.contentMainView}>
+        <View style={{flexDirection: 'row'}}>
+          <AppIconButton
+            icon={WHATSUP_ICON}
+            containerStyle={styles.iconButton}
+            onPress={() => sendWhatsUpMessage(voterDetails?.phoneNumber ?? '')}
+          />
+          <AppIconButton
+            onPress={() => connectToCall(voterDetails?.phoneNumber ?? '')}
+            icon={CALL_BLUE}
+            containerStyle={styles.iconButton}
+          />
+          <AppIconButton
+            onPress={() => sendSms(voterDetails?.phoneNumber ?? '')}
+            icon={MAIL_WHITE}
+            containerStyle={styles.iconButton}
+          />
+        </View>
+        <View style={styleSheet.dividerViewRegular} />
         <AppForm
           onPressButton={_onPressSaveButton}
           buttonText={'Save'}
@@ -387,4 +416,9 @@ const VolunteerDetails = (props: any) => {
     </Background>
   );
 };
+const styles = StyleSheet.create({
+  iconButton: {
+    marginLeft: wp(2),
+  },
+});
 export default VolunteerDetails;
