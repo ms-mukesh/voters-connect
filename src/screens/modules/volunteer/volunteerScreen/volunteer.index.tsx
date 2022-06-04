@@ -82,6 +82,7 @@ const Volunteer = (props: any) => {
         leftIcon={fromVoterList ? LEFT_BACK_ARROW : null}
         title={'Volunteer List'}
         navigation={fromVoterList ? props?.navigation ?? null : null}
+        requireBackArrow={false}
       />
       <View style={styleSheet.dividerViewRegular} />
       <CustomFlatList data={volunteerList} renderItem={_renderVolunteerList} />

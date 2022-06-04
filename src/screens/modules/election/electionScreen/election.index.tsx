@@ -110,6 +110,7 @@ const ElectionList = (props: any) => {
       <AppHeader
         navigation={props?.navigation ?? null}
         title={'Election List'}
+        requireBackArrow={false}
       />
       <View style={styleSheet.contentMainView}>
         <View style={styleSheet.dividerViewRegular} />

@@ -280,6 +280,7 @@ const VoterList = (props: any) => {
         navigation={props?.navigation ?? null}
         title={'Voter list'}
         onRightIconPress={_onPressFilterIcon}
+        requireBackArrow={false}
       />
       <View style={styleSheet.dividerViewRegular} />
       {isFilterOn && (
