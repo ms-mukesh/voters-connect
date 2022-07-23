@@ -22,6 +22,7 @@ export const addBulkVoterListInDb = (dataArray: any = []) => {
         API_METHOD.post,
         obj,
       );
+      console.log("res--",obj)
       if (
         addBulkDataRes &&
         addBulkDataRes?.status === SUCCESS_API_RESPONSE_CODE

@@ -133,6 +133,10 @@ const CustomFlatList = (props: FlatListType) => {
         renderItem={renderItem}
         columnWrapperStyle={columnWrapperStyle}
         ItemSeparatorComponent={ItemSeparatorComponent}
+        // @ts-ignore
+        keyExtractor={(_: any, index: number) =>
+          'ListIndex' + index + Math.random()
+        }
         {...props}
       />
       {bottomLoader && <BottomLoader customStyle={customBottomLoaderStyle} />}

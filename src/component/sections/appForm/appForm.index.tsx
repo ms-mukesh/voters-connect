@@ -129,6 +129,7 @@ const AppForm = (props: AppFormType) => {
     minimumDate = new Date(),
     maximumDate = new Date(),
   ) => {
+    console.log('max--', maximumDate);
     return (
       <DateTimePickerModal
         isVisible={calculatedOpenDatePicker}
@@ -136,7 +137,7 @@ const AppForm = (props: AppFormType) => {
         onConfirm={date => _onGetValueFromDatePicker(date)}
         onCancel={_closeDatePicker}
         minimumDate={minimumDate}
-        maximumDate={maximumDate}
+        // maximumDate={maximumDate}
       />
     );
   };

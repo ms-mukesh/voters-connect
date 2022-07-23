@@ -27,7 +27,7 @@ import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
 // import Slider from '@react-native-community/slider';
 const VoterList = (props: any) => {
   const {} = props;
-  const PAGE_LIMIT = 7;
+  const PAGE_LIMIT = 100;
   const [voterList, setVoterList] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [isFilterOn, setIsFilterOn] = useState(false);
