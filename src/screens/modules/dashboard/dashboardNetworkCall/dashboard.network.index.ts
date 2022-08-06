@@ -4,6 +4,7 @@ import {API_METHOD} from '@/src/constant/network';
 import {
   ADD_BULK_VOTER_LIST_ENDPOINT,
   GET_DASHBOARD_DETAILS,
+  SEND_BROADCAST_MESSAGE,
   USER_ACTION_STACK,
 } from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.network.const';
 import {showPopupMessage} from '@/src/utils/localPopup';
@@ -22,7 +23,7 @@ export const addBulkVoterListInDb = (dataArray: any = []) => {
         API_METHOD.post,
         obj,
       );
-      console.log("res--",obj)
+      console.log('res--', obj);
       if (
         addBulkDataRes &&
         addBulkDataRes?.status === SUCCESS_API_RESPONSE_CODE
@@ -52,3 +53,29 @@ export function GetDashboardDetails(options?: SWRConfiguration) {
     mutate,
   };
 }
+
+export const sendBroadCastMessageFromDb = (reqObj: any) => {
+  return new Promise(async resolve => {
+    try {
+      const obj = {
+        data: reqObj,
+      };
+      const sendMessageRes = await callApi(
+        USER_ACTION_STACK + SEND_BROADCAST_MESSAGE,
+        API_METHOD.post,
+        obj,
+      );
+      if (
+        sendMessageRes &&
+        sendMessageRes?.status === SUCCESS_API_RESPONSE_CODE
+      ) {
+        showPopupMessage({message: 'Sent!'});
+        return resolve(true);
+      } else {
+        return resolve(false);
+      }
+    } catch (ex) {
+      return resolve(false);
+    }
+  });
+};

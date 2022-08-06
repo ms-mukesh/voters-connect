@@ -5,6 +5,7 @@ import {
   CustomCheckBox,
   CustomText,
   CustomTextInput,
+  Loader,
 } from '@/src/component/common';
 import {AppHeader} from '@/src/component/section.index';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
@@ -14,6 +15,7 @@ import {color} from '@/src/utils/color';
 import {BROADCAST_MESSAGE_CATEGORY} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.network.const';
 import {showPopupMessage} from '@/src/utils/localPopup';
 import {isStringNotEmpty} from '@/src/utils/utilityMethods/stringMethod.index';
+import {sendBroadCastMessageFromDb} from '@/src/screens/modules/dashboard/dashboardNetworkCall/dashboard.network.index';
 const BroadCastMessage = (props: any) => {
   const {} = props;
   const styleSheet = StyleSheetSelection();
@@ -24,6 +26,7 @@ const BroadCastMessage = (props: any) => {
   const [ageFrom36To60Check, setAgeFrom36To60Check] = useState(false);
   const [age60PlusCheck, setAge60PlusCheck] = useState(false);
   const [allCheck, setAllCheck] = useState(false);
+  const [apiLoader, setApiLoader] = useState(false);
 
   const _onChangeMessage = (e: any) => {
     setMessageText(e?.nativeEvent?.text ?? '');
@@ -56,7 +59,7 @@ const BroadCastMessage = (props: any) => {
         break;
     }
   };
-  const _onPressSendMessage = () => {
+  const _onPressSendMessage = async () => {
     if (
       !allFemaleChecked &&
       !allCheck &&
@@ -98,10 +101,21 @@ const BroadCastMessage = (props: any) => {
       categoryArray.push(BROADCAST_MESSAGE_CATEGORY.ageFrom36To60);
     }
     const messageObj = {
-      message: messageText,
+      message: messageText?.toString()?.trim(),
       category: categoryArray,
     };
-    console.log(messageObj);
+    setApiLoader(true);
+    const isMessageSent = await sendBroadCastMessageFromDb(messageObj);
+    if (isMessageSent) {
+      setMessageText('');
+      setAllCheck(false);
+      setAllFemaleChecked(false);
+      setAllMaleChecked(false);
+      setAge60PlusCheck(false);
+      setAgeFrom36To60Check(false);
+      setAgeFrom18To35Check(false);
+    }
+    setApiLoader(false);
   };
   return (
     <Background>
@@ -110,6 +124,7 @@ const BroadCastMessage = (props: any) => {
         title={'Broadcast Message'}
       />
       <View style={styleSheet.dividerViewRegular} />
+      {apiLoader && <Loader isLoading={true} />}
       <View style={styleSheet.contentMainView}>
         <ScrollView
           showsVerticalScrollIndicator={false}

@@ -1,6 +1,7 @@
 export const USER_ACTION_STACK = 'userActions/';
 export const ADD_BULK_VOTER_LIST_ENDPOINT = 'insertBulkVoterList';
 export const GET_DASHBOARD_DETAILS = 'getDashboardDetails';
+export const SEND_BROADCAST_MESSAGE = 'sendBroadCastMessage';
 export const BROADCAST_MESSAGE_CATEGORY = {
   allMale: 'allMale',
   allFemale: 'allFemale',
