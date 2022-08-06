@@ -22,4 +22,5 @@ export const SCREEN_NAME = {
   appFilterScreen: 'appFilterScreen',
   volunteerList: 'volunteerList',
   volunteerDetails: 'volunteerDetails',
+  broadCastMessage: 'broadCastMessage',
 };

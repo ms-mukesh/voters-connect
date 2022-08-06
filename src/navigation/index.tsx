@@ -26,6 +26,7 @@ import ElectionVotersTab from '@/src/screens/modules/election/electionScreen/ele
 import AppFilterScreen from '@/src/screens/commonScreen/filterScreen/appFilterScreen.index';
 import Volunteer from '@/src/screens/modules/volunteer/volunteerScreen/volunteer.index';
 import VolunteerDetails from '@/src/screens/modules/volunteer/volunteerScreen/volunteerDetails.index';
+import BroadCastMessage from "@/src/screens/modules/dashboard/dashboardScreen/broadCastMessage.index";
 
 const AppNavigation = () => {
   return (
@@ -101,6 +102,10 @@ const AppNavigation = () => {
         <Stack.Screen
           name={SCREEN_NAME.volunteerDetails}
           component={VolunteerDetails}
+        />
+        <Stack.Screen
+          name={SCREEN_NAME.broadCastMessage}
+          component={BroadCastMessage}
         />
       </Stack.Navigator>
       <Toast />

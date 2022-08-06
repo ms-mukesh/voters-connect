@@ -49,6 +49,13 @@ const Dashboard = (props: any) => {
     }
     setApiLoader(false);
   };
+
+  const _onPressBroadCastMessage = () => {
+    implementStackNavigation(
+      props?.navigation ?? null,
+      SCREEN_NAME.broadCastMessage,
+    );
+  };
   const _onPressElectionList = () => {
     implementStackNavigation(
       props?.navigation ?? null,
@@ -120,6 +127,12 @@ const Dashboard = (props: any) => {
         <DashboardCard
           onPressCard={_addBulkData}
           title={'Import data from CSV/EXCEL'}
+          backgroundColor={color.light_background}
+        />
+        <View style={styleSheet.dividerViewRegular} />
+        <DashboardCard
+          onPressCard={_onPressBroadCastMessage}
+          title={'Broadcast Message'}
           backgroundColor={color.light_background}
         />
         <View style={styleSheet.dividerViewRegular} />
