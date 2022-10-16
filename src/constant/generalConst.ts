@@ -27,4 +27,7 @@ export const MONTH_INITIALS_NAME = [
   'Nov',
   'Dec',
 ];
+export const USER_ROLES = {
+  admin: 'admin',
+};
 export const SOMETHING_WENT_WRONG = 'Something went wrong';

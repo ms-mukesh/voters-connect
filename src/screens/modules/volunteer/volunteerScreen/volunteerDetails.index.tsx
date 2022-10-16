@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Background, Loader} from '@/src/component/common';
 import {AppHeader} from '@/src/component/section.index';
-import {KEYBOARD_TYPE} from '@/src/constant/generalConst';
+import {KEYBOARD_TYPE, USER_ROLES} from '@/src/constant/generalConst';
 import {FIELD_TYPE} from '@/src/component/sections/appForm/appForm.const.index';
 import StyleSheetSelection from '@/src/screens/styleSheet/styleSheet.index';
 import {StyleSheet, View} from 'react-native';
@@ -35,6 +35,8 @@ import {
   sendSms,
   sendWhatsUpMessage,
 } from '@/src/utils/utilityMethods/connectMethod/connectMethod.index';
+import {getValueFromAsyncStorage} from '@/src/utils/utilityMethods/asynStorageMethod/asynStorage.index';
+import {ASYNC_STORAGE_CONST} from '@/src/utils/utilityMethods/asynStorageMethod/asynStorage.const.index';
 
 const VolunteerDetails = (props: any) => {
   const {} = props;
@@ -57,6 +59,7 @@ const VolunteerDetails = (props: any) => {
       : 'male',
   );
   const voterType = 'volunteer';
+  const [userRole, setUserRole]: any = useState('normal');
 
   const [genderIndex, setGenderIndex] = useState(0);
   const [volunteerIndex, setVolunteerIndex] = useState(0);
@@ -87,6 +90,13 @@ const VolunteerDetails = (props: any) => {
     setVoterCategoryIndex(index);
     setVoterCategory(VOTER_CATEGORY[index].title);
   };
+  useEffect(() => {
+    getValueFromAsyncStorage(ASYNC_STORAGE_CONST.userRole).then(res => {
+      if (res) {
+        setUserRole(res);
+      }
+    });
+  }, []);
   useEffect(() => {
     setGenderIndex(GENDER_ARRAY.findIndex(item => item.title === gender));
     setVoterCategoryIndex(
@@ -234,6 +244,7 @@ const VolunteerDetails = (props: any) => {
       editable: !fromVoterList,
       selectTextOnFocus: false,
     },
+
     {
       headerTitle: 'Email Id',
       placeHolder: 'Enter Email Id',
@@ -245,7 +256,7 @@ const VolunteerDetails = (props: any) => {
       editable: !fromVoterList,
       selectTextOnFocus: false,
     },
-    {
+    userRole === USER_ROLES.admin && {
       headerTitle: 'Password',
       placeHolder: 'Enter Password',
       mandatory: true,
@@ -410,6 +421,7 @@ const VolunteerDetails = (props: any) => {
           onPressButton={_onPressSaveButton}
           buttonText={'Save'}
           fields={formFields}
+          requireAppButton={userRole === USER_ROLES.admin}
         />
         <View style={styleSheet.dividerViewRegular} />
       </View>

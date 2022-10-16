@@ -9,7 +9,8 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "android-clean-mac": "cd android && ./gradlew clean && cd ..",
-    "build-android": "cd android && ./gradlew app:assembleRelease"
+    "build-android": "cd android && ./gradlew app:assembleRelease",
+    "build-android-prod": "cd android && SET ENVFILE=.env.production && gradlew app:assembleRelease"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.0",

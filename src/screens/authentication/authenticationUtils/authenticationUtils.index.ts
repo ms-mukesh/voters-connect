@@ -128,6 +128,7 @@ export const executeLogout = async () => {
   try {
     await removeValueFromAsyncStore(ASYNC_STORAGE_CONST.accessToken);
     await removeValueFromAsyncStore(ASYNC_STORAGE_CONST.allFieldsValidForLogin);
+    await removeValueFromAsyncStore(ASYNC_STORAGE_CONST.userRole);
     implementReplaceNavigation(null, SCREEN_NAME.entrance);
   } catch (ex) {
     implementReplaceNavigation(null, SCREEN_NAME.entrance);

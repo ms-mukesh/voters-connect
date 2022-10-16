@@ -112,6 +112,10 @@ const Login = (props: any) => {
             ASYNC_STORAGE_CONST.accessToken,
             loginApiRes?.data?.data?.accessToken ?? '',
           );
+          await setValueInAsyncStorage(
+            ASYNC_STORAGE_CONST.userRole,
+            loginApiRes?.data?.data?.role ?? 'normal',
+          );
           implementReplaceNavigation(
             props?.navigation ?? null,
             SCREEN_NAME.indexScreen,
