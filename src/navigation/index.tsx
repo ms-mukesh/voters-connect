@@ -6,7 +6,7 @@ import {navigationRef} from './rootNavigation';
 import Entrance from '@/src/screens/entrance/entrance.index';
 import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
 import Login from '@/src/screens/authentication/authenticationScreen/login/login.index';
-import Signup from '@/src/screens/authentication/authenticationScreen/signup/signup.index';
+import Signup from '@/src/screens/authentication/authenticationScreen/signupV2/signupV2.index';
 import OtpVerification from '@/src/screens/authentication/authenticationScreen/otpVerification/otpVerification.phoneNumber.index';
 import ForgotPassword from '@/src/screens/authentication/authenticationScreen/forgotPassword/forgotPassword.index';
 import SetPassword from '@/src/screens/authentication/authenticationScreen/setPassword/setPassword.index';

@@ -6,6 +6,7 @@ export const CUSTOM_EVENT_TYPE = {
   nativeAutoFillOtpEvent: 'autoFillOtpEvent',
   otpAutoFillCustomEvent: 'otpAutoFillCustomEvent',
 };
+export const STRING_REGEX = /^[a-zA-Z ]+$/i;
 export const ELECTION_TYPES = [
   {title: 'assembly'},
   {title: 'loksabha'},

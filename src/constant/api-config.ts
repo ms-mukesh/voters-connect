@@ -7,9 +7,9 @@ export const BASE_URL = Config.API_BASE_URL;
 // export const DELETE = 'delete';
 export const API_TIMEOUT = 10000;
 export enum VALID_METHODS {
-    'GET',
-    'POST',
-    'PUT',
-    'DELETE',
-    'PATCH',
+  'GET',
+  'POST',
+  'PUT',
+  'DELETE',
+  'PATCH',
 }

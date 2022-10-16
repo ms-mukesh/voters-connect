@@ -7,9 +7,10 @@ import {
   CustomText,
   CustomTextInput,
 } from '@/src/component/common';
-import {View} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {
   CONCERN_TEXT,
+  DONT_HAVE_ACCOUNT_TEXT,
   EMAIL_ADDRESS_TEXTINPUT,
   INVALID_EMAIL,
   INVALID_PASSWORD,
@@ -18,6 +19,7 @@ import {
   LOGIN_PWD_TEXTINPUT,
   LOGIN_TITLE,
   REMEMBER_ME_TEXT,
+  SIGNUP_TITLE,
 } from '@/src/screens/authentication/authenticationUtils/authentication.const.index';
 import styles from '@/src/screens/authentication/authenticationStyle/authentication.stylesheet.index';
 import {isInValidEmailAddress} from '@/src/utils/validations/fieldValidator.index';
@@ -35,7 +37,10 @@ import {
   EYE_OPENED,
 } from '@/src/assets/images/svgIcons/authentication/authentication.index';
 import {loginUserApi} from '@/src/screens/authentication/authenticationNetworkCall/authentication.network.index';
-import {implementReplaceNavigation} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
+import {
+  implementReplaceNavigation,
+  implementStackNavigation,
+} from '@/src/utils/utilityMethods/generalUtility/generalUtility.index';
 import {SCREEN_NAME} from '@/src/constant/screenConfig.const';
 const Login = (props: any) => {
   const {} = props;
@@ -130,6 +135,9 @@ const Login = (props: any) => {
       setEmailAddress('');
     }
   };
+  const _onPressSignup = () => {
+    implementStackNavigation(props?.navigation ?? null, SCREEN_NAME.signup);
+  };
 
   //useEffects
 
@@ -201,21 +209,21 @@ const Login = (props: any) => {
                 {CONCERN_TEXT}
               </CustomText>
             </View>
-            {/*<Pressable*/}
-            {/*  onPress={_onPressSignup}*/}
-            {/*  style={styles.dontHaveAccountView}>*/}
-            {/*  <CustomText style={styleSheet.largeRegular}>*/}
-            {/*    {DONT_HAVE_ACCOUNT_TEXT}*/}
-            {/*  </CustomText>*/}
-            {/*  <CustomText*/}
-            {/*    style={[*/}
-            {/*      styleSheet.largeBold,*/}
-            {/*      styles.signupTitle,*/}
-            {/*      styleSheet.underLine,*/}
-            {/*    ]}>*/}
-            {/*    {SIGNUP_TITLE}*/}
-            {/*  </CustomText>*/}
-            {/*</Pressable>*/}
+            <Pressable
+              onPress={_onPressSignup}
+              style={styles.dontHaveAccountView}>
+              <CustomText style={styleSheet.largeRegular}>
+                {DONT_HAVE_ACCOUNT_TEXT}
+              </CustomText>
+              <CustomText
+                style={[
+                  styleSheet.largeBold,
+                  styles.signupTitle,
+                  styleSheet.underLine,
+                ]}>
+                {SIGNUP_TITLE}
+              </CustomText>
+            </Pressable>
           </View>
         </View>
       </CustomKeyboardAwareScrollView>

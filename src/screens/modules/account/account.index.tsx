@@ -13,7 +13,6 @@ import {executeLogout} from '@/src/screens/authentication/authenticationUtils/au
 const Account = (props: any) => {
   const {} = props;
   const {data}: any = UseAppSelector(state => state.profile);
-  console.log('data--', data);
   const dispatch = UseAppDispatch();
   const styleSheet = StyleSheetSelection();
   const _setMyProfileData = async () => {
@@ -27,7 +26,7 @@ const Account = (props: any) => {
       voterDetails: data,
       refereshList: _setMyProfileData,
       headerTitle: 'Edit Profile',
-      landedToEditMyProfile:true
+      landedToEditMyProfile: true,
     };
     implementStackNavigation(
       props?.navigation ?? null,
@@ -73,19 +72,23 @@ const Account = (props: any) => {
             <View style={styleSheet.dividerViewRegular} />
             <AppCard>
               <CustomText style={styleSheet.largeSemiBold}>
-                {'Mandal Name: ' + data?.mandalName ?? ''}
+                {'Mandal Name: '}
+                <CustomText>{data?.mandalName ?? 'NA'}</CustomText>
               </CustomText>
               <View style={styleSheet.dividerView} />
               <CustomText style={styleSheet.largeSemiBold}>
-                {'Shakti kendra: ' + data?.shaktiKendraName ?? ''}
+                {'Shakti kendra: '}
+                <CustomText>{data?.shaktiKendraName ?? 'NA'}</CustomText>
               </CustomText>
               <View style={styleSheet.dividerView} />
               <CustomText style={styleSheet.largeSemiBold}>
-                {'Booth: ' + data?.boothId ?? ''}
+                {'Booth: '}
+                <CustomText> {data?.boothId ?? 'NA'}</CustomText>
               </CustomText>
               <View style={styleSheet.dividerView} />
               <CustomText style={styleSheet.largeSemiBold}>
-                {'Gender: ' + data?.gender ?? ''}
+                {'Gender: '}
+                <CustomText> {data?.gender ?? 'NA'}</CustomText>
               </CustomText>
               <View style={styleSheet.dividerView} />
             </AppCard>

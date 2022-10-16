@@ -1,3 +1,5 @@
+import { STRING_REGEX } from "@/src/constant/generalConst";
+
 export const isValueDefined = (value: string) => {
   return typeof value !== 'undefined';
 };
@@ -34,4 +36,11 @@ export const removeDuplicates = (arr: any, key: string) => {
     _.push(val[key]);
     return val;
   });
+};
+export const isAlpha = (string = '') => {
+  if (isStringNotEmpty(string)) {
+    return STRING_REGEX.test(string);
+  } else {
+    return true;
+  }
 };

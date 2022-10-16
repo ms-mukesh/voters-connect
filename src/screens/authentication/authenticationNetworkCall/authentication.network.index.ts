@@ -6,6 +6,7 @@ import {
   LOGIN_STACK,
   SIGNUP_API_REQ_TYPE,
   SIGNUP_USER_ENDPOINT,
+  SIGNUP_USER_V2_ENDPOINT,
   VERIFY_OTP_ENDPOINT,
 } from '@/src/screens/authentication/authenticationNetworkCall/authentication.network.const';
 import {API_METHOD} from '@/src/constant/network';
@@ -105,6 +106,7 @@ export const signupUserFromApi = ({
         email: email,
         password: password,
       };
+      console.log(obj);
       const signUpUserApiRes = await callApi(
         SIGNUP_USER_ENDPOINT,
         API_METHOD.post,
@@ -112,9 +114,18 @@ export const signupUserFromApi = ({
         API_BASE_URL,
         awsAuthHeaderConfig,
       );
-      if (signUpUserApiRes) {
+      console.log('signUpUserApiRes--', signUpUserApiRes);
+      if (
+        signUpUserApiRes &&
+        signUpUserApiRes?.status === SUCCESS_API_RESPONSE_CODE
+      ) {
         return resolve(signUpUserApiRes);
       } else {
+        showPopupMessage({
+          message: signUpUserApiRes?.data ?? 'Invalid details',
+          type: 'error',
+        });
+
         return resolve(false);
       }
     } catch (ex) {
@@ -154,6 +165,34 @@ export const loginUserApi = (emailId = '', password = '') => {
   });
 };
 
+export const signupUserApi = (obj: any) => {
+  return new Promise(async resolve => {
+    try {
+      const signupUserApiRes = await callApi(
+        LOGIN_STACK + SIGNUP_USER_V2_ENDPOINT,
+        API_METHOD.post,
+        obj,
+        API_BASE_URL,
+        {},
+        false,
+      );
+      if (
+        signupUserApiRes &&
+        signupUserApiRes?.status === SUCCESS_API_RESPONSE_CODE
+      ) {
+        return resolve(signupUserApiRes);
+      } else {
+        showPopupMessage({
+          message: signupUserApiRes?.data?.data ?? 'Invalid details',
+          type: 'error',
+        });
+        return resolve(false);
+      }
+    } catch (ex) {
+      return resolve(false);
+    }
+  });
+};
 export const getMyProfileFromDb = () => {
   return new Promise(async resolve => {
     try {
